@@ -1,0 +1,53 @@
+$base: 6;
+
+$font-xs: $base * 2;
+$font-sm: $base * 2.5;
+$font-md: $base * 3;
+$font-lg: $base * 4;
+$font-xl: $base * 5;
+$font-xxl: $base * 6;
+$font-xxxl: $base * 7;
+
+$header-height: $base * 12;
+
+$hues: (
+  red: 358,
+  red-orange: 17,
+  orange: 34,
+  orange-yellow: 51,
+  yellow: 63,
+  yellow-green: 91,
+  green: 118,
+  cyan: 178,
+  blue: 213,
+  indigo: 249,
+  purple: 282,
+  pink: 315,
+);
+
+$saturations: (
+  red: 85,
+  red-orange: 89,
+  orange: 93,
+  orange-yellow: 97,
+  yellow: 100,
+  yellow-green: 70,
+  green: 40,
+  cyan: 80,
+  blue: 86,
+  indigo: 82,
+  purple: 85,
+  pink: 100,
+);
+
+$grey-hues: (
+  warm: 315,
+  cool: 213,
+  neutral: 358,
+);
+$grey-saturations: (
+  warm: 6,
+  cool: 16,
+  neutral: 0,
+);
+

@@ -1,0 +1,11 @@
+#header {
+  width: 100svw;
+  min-height: to-rem($header-height);
+  top: 0;
+
+  .header-inner {
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+

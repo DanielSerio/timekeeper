@@ -1,0 +1,8 @@
+#sidebar {
+  position: fixed;
+  $top: to-rem($header-height);
+  top: $top;
+  max-width: $top;
+  min-height: calc(33svh - $top);
+}
+

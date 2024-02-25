@@ -1,0 +1,80 @@
+@function warm-grey($light, $alpha: 1) {
+  $hue: map-get($grey-hues, warm);
+  $saturation: map-get($grey-saturations, warm);
+  @return hsla($hue, $saturation * 1%, $light * 1%, $alpha);
+}
+@function neutral-grey($light, $alpha: 1) {
+  $hue: map-get($grey-hues, neutral);
+  $saturation: map-get($grey-saturations, neutral);
+  @return hsla($hue, $saturation * 1%, $light * 1%, $alpha);
+}
+@function cool-grey($light, $alpha: 1) {
+  $hue: map-get($grey-hues, cool);
+  $saturation: map-get($grey-saturations, cool);
+  @return hsla($hue, $saturation * 1%, $light * 1%, $alpha);
+}
+@function red($light: 60, $alpha: 1) {
+  $hue: map-get($hues, red);
+  $saturation: map-get($saturations, red);
+  @return hsla($hue, $saturation * 1%, $light * 1%, $alpha);
+}
+@function red-orange($light: 60, $alpha: 1) {
+  $hue: map-get($hues, red-orange);
+  $saturation: map-get($saturations, red-orange);
+  @return hsla($hue, $saturation * 1%, $light * 1%, $alpha);
+}
+@function orange($light: 60, $alpha: 1) {
+  $hue: map-get($hues, orange);
+  $saturation: map-get($saturations, orange);
+  @return hsla($hue, $saturation * 1%, $light * 1%, $alpha);
+}
+@function orange-yellow($light: 60, $alpha: 1) {
+  $hue: map-get($hues, orange-yellow);
+  $saturation: map-get($saturations, orange-yellow);
+  @return hsla($hue, $saturation * 1%, $light * 1%, $alpha);
+}
+@function yellow($light: 60, $alpha: 1) {
+  $hue: map-get($hues, yellow);
+  $saturation: map-get($saturations, yellow);
+  @return hsla($hue, $saturation * 1%, $light * 1%, $alpha);
+}
+@function yellow-green($light: 60, $alpha: 1) {
+  $hue: map-get($hues, yellow-green);
+  $saturation: map-get($saturations, yellow-green);
+  @return hsla($hue, $saturation * 1%, $light * 1%, $alpha);
+}
+@function green($light: 60, $alpha: 1) {
+  $hue: map-get($hues, green);
+  $saturation: map-get($saturations, green);
+  @return hsla($hue, $saturation * 1%, $light * 1%, $alpha);
+}
+@function cyan($light: 60, $alpha: 1) {
+  $hue: map-get($hues, cyan);
+  $saturation: map-get($saturations, cyan);
+  @return hsla($hue, $saturation * 1%, $light * 1%, $alpha);
+}
+@function blue($light: 60, $alpha: 1) {
+  $hue: map-get($hues, blue);
+  $saturation: map-get($saturations, blue);
+  @return hsla($hue, $saturation * 1%, $light * 1%, $alpha);
+}
+@function indigo($light: 60, $alpha: 1) {
+  $hue: map-get($hues, indigo);
+  $saturation: map-get($saturations, indigo);
+  @return hsla($hue, $saturation * 1%, $light * 1%, $alpha);
+}
+@function purple($light: 60, $alpha: 1) {
+  $hue: map-get($hues, purple);
+  $saturation: map-get($saturations, purple);
+  @return hsla($hue, $saturation * 1%, $light * 1%, $alpha);
+}
+@function pink($light: 60, $alpha: 1) {
+  $hue: map-get($hues, pink);
+  $saturation: map-get($saturations, pink);
+  @return hsla($hue, $saturation * 1%, $light * 1%, $alpha);
+}
+
+@function to-rem($px) {
+  @return calc($px / $font-xs) * 1rem;
+}
+

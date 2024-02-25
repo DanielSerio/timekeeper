@@ -1,0 +1,19 @@
+@mixin palette {
+  --red: #{red()};
+  --red-orange: #{red-orange()};
+  --orange: #{orange()};
+  --orange-yellow: #{orange-yellow()};
+  --yellow: #{yellow()};
+  --yellow-green: #{yellow-green()};
+  --green: #{green()};
+  --cyan: #{cyan()};
+  --blue: #{blue()};
+  --indigo: #{indigo()};
+  --purple: #{purple()};
+  --pink: #{pink()};
+
+  --warm-grey: #{warm-grey(60)};
+  --neutral-grey: #{neutral-grey(60)};
+  --cool-grey: #{cool-grey(60)};
+}
+
