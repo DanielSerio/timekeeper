@@ -1,0 +1,6 @@
+nav#mainNav {
+  display: flex;
+  flex-direction: column;
+  gap: to-rem($base);
+}
+

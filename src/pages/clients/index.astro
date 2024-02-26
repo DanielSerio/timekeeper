@@ -1,8 +1,12 @@
 ---
 import { ClientsPage } from "../../frontend/pages/ClientsPage";
 import MainLayout from "../../layout/MainLayout.astro";
+import { getURLQueryObject } from "../../utility/get-url-query-object";
+
+const request = Astro.request;
+const query = getURLQueryObject(request.url);
 ---
 
 <MainLayout>
-  <ClientsPage client:load />
+  <ClientsPage client:only query={query} />
 </MainLayout>

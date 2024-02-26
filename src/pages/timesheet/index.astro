@@ -1,8 +1,15 @@
 ---
 import MainLayout from "../../layout/MainLayout.astro";
 import { TimesheetPage } from "../../frontend/pages/TimesheetPage";
+import { getClientService } from "../../services/client.service";
+import { getDataSource } from "../../data/source";
+
+const source = await getDataSource();
+const clientService = getClientService(source);
+
+const clients = await clientService.getAll();
 ---
 
 <MainLayout>
-  <TimesheetPage client:load />
+  <TimesheetPage client:only clients={clients} />
 </MainLayout>

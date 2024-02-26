@@ -1,0 +1,20 @@
+.sidebar-nav-item {
+  border: 1px solid #{warm-grey(20)};
+  height: to-rem($header-height - 38);
+  border-radius: to-rem(3);
+  width: to-rem($header-height - 38);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &,
+  &:visited {
+    color: #{warm-grey(60)};
+  }
+
+  &.active {
+    background: #{blue(63)};
+    color: white;
+  }
+}
+
