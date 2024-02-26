@@ -1,0 +1,81 @@
+$border-color: cool-grey(24);
+.modal-root {
+  margin: to-rem(24);
+  height: 100svh;
+  width: 100svw;
+  border: none;
+  overflow: visible;
+  background: transparent;
+}
+
+.modal-root > .backdrop {
+  position: absolute;
+  top: -24px;
+  left: -24px;
+  z-index: 0;
+  height: calc(100% + to-rem(48));
+  width: calc(100% + to-rem(48));
+  background: warm-grey(3, 0.8);
+  backdrop-filter: blur(13px);
+}
+
+.modal-root > .modal-content {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > .card {
+    pointer-events: all;
+  }
+}
+
+.modal-root .card {
+  border: 1px solid $border-color;
+  min-width: to-rem(288);
+  min-height: to-rem(216);
+  position: relative;
+  overflow: visible;
+  border-radius: to-rem(5);
+  background: cool-grey(8);
+  width: 100%;
+  max-width: calc(65ch + to-rem(48));
+  box-shadow: 0 2px 4px -1px black, 0 4px 8px -3px rgba(black, 0.5),
+    0 1px 16px rgba(black, 0.5), 0 0 32px rgba(black, 0.25);
+
+  .body,
+  header,
+  footer {
+    display: flex;
+    padding: to-rem($base * 2);
+  }
+
+  header {
+    border-bottom: 1px solid;
+    justify-content: space-between;
+  }
+
+  footer {
+    border-top: 1px solid;
+    justify-content: flex-end;
+  }
+
+  header,
+  footer {
+    align-items: center;
+    min-height: to-rem(48);
+    border-color: $border-color;
+  }
+
+  .body {
+    overflow-y: auto;
+    flex-direction: column;
+    flex: 1;
+    min-height: to-rem(168);
+  }
+}
+

@@ -1,5 +1,6 @@
 export function getURLQueryObject(url: string): { [k: string]: string } {
   const queryString = url.split(/[?]/g)[1];
+  if (queryString === undefined) return {};
   const queries = queryString.split(/[&]/g);
   const entries = queries
     .map((q: string) => {
