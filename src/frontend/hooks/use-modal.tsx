@@ -31,6 +31,10 @@ export const ModalElement = forwardRef(
 export interface UseAlertModalParams {
   onClose: () => Promise<void>;
 }
+export interface UseConfirmModalParams {
+  onClose: () => Promise<void>;
+  onConfirm: () => Promise<void>;
+}
 
 const useModalActions = (
   onClose: () => Promise<void>,
@@ -83,6 +87,46 @@ export const useAlertModal = (props: UseAlertModalParams) => {
     return (
       <ModalElement ref={modalRef} onTriggerClose={closeModal}>
         <div className="body">{props.children}</div>
+        <Footer />
+      </ModalElement>
+    );
+  };
+
+  return {
+    Modal,
+    openModal,
+    closeModal,
+  };
+};
+
+export const useConfirmModal = (props: UseConfirmModalParams) => {
+  let modalRef = createRef<HTMLDialogElement>();
+  const { openModal, closeModal } = useModalActions(props.onClose, modalRef);
+
+  const Modal = (prps: PropsWithChildren<{}>) => {
+    const [performingAction, setPerformingAction] = useState(false);
+    const close = async () => {
+      setPerformingAction(true);
+      await props.onConfirm();
+      await closeModal();
+      setPerformingAction(false);
+    };
+
+    const Footer = () => (
+      <footer>
+        <pre>{performingAction && JSON.stringify({ performingAction })}</pre>
+        <button disabled={performingAction === true} onClick={closeModal}>
+          Cancel
+        </button>
+        <button disabled={performingAction === true} onClick={close}>
+          OK
+        </button>
+      </footer>
+    );
+
+    return (
+      <ModalElement ref={modalRef} onTriggerClose={closeModal}>
+        <div className="body">{prps.children}</div>
         <Footer />
       </ModalElement>
     );
