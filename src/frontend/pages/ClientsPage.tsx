@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { SidebarNav } from "../component/nav/SidebarNav";
 import { Shell } from "../component/shell/Shell";
 import { ShellContent } from "../component/shell/ShellContent";
@@ -8,6 +8,7 @@ import { ShellSidebar } from "../component/shell/ShellSidebar";
 import { ConfirmModal } from "../component/modals/ConfirmModal";
 import { useControls, type FormValues } from "../hooks/use-controls";
 import { useValidation } from "../hooks/use-validation";
+import { type UseFormParams, useForm } from "../hooks/use-form";
 
 export interface ClientsPageProps {
   query?: {
@@ -49,11 +50,36 @@ export const ClientsPage = (props: ClientsPageProps) => {
       },
     },
   };
+
+  const UseFormControlValues: UseFormParams = {
+    checked: {
+      componentName: "checkbox",
+      componentProps: {
+        checked: true,
+      },
+      initialValue: false,
+      label: "Checked",
+      name: "checked",
+    },
+    value: {
+      componentName: "input",
+      componentProps: {
+        type: "text",
+      },
+      initialValue: "",
+      label: "Test",
+      name: "value",
+      validator: (v: string | number | boolean | string[] | number[]) =>
+        `${v ?? ""}`.length >= 3 ? null : (`Value too short` as string),
+    },
+  };
   const { validation, validateField } = useValidation(controlValues, {
     value: (v) =>
       `${v}`.length < 3 ? `Value must be at least 3 characters` : null,
   });
-  const controls = useControls(controlValues, validateField);
+  //const controls = useControls(controlValues, validateField);
+
+  const { controls, values, json } = useForm(UseFormControlValues);
 
   const [isOpen, { open, close }] = useDisclosure();
 
@@ -66,17 +92,20 @@ export const ClientsPage = (props: ClientsPageProps) => {
       <button onClick={() => open()}>open</button>
       <ConfirmModal
         onAccept={() => {
-          console.log(JSON.stringify(controls.json));
           setTimeout(() => {
+            console.log(json);
             close();
           }, 1000);
         }}
         onDecline={close}
         isOpen={isOpen}
       >
-        {JSON.stringify(controls.values)}
-        {JSON.stringify(validation)}
-        {controls.controls}
+        {useMemo(
+          () => (
+            <form action="">{controls}</form>
+          ),
+          [values, controls]
+        )}
       </ConfirmModal>
       <ShellContent>
         <section>
