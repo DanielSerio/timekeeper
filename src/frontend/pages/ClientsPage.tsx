@@ -79,7 +79,7 @@ export const ClientsPage = (props: ClientsPageProps) => {
   });
   //const controls = useControls(controlValues, validateField);
 
-  const { controls, values, json } = useForm(UseFormControlValues);
+  const { controls, values, json, onSubmit } = useForm(UseFormControlValues);
 
   const [isOpen, { open, close }] = useDisclosure();
 
@@ -93,6 +93,7 @@ export const ClientsPage = (props: ClientsPageProps) => {
       <ConfirmModal
         onAccept={() => {
           setTimeout(() => {
+            onSubmit();
             console.log(json);
             close();
           }, 1000);

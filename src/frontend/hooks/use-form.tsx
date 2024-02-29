@@ -62,14 +62,14 @@ export function useForm<Type extends UseFormParams>(params: Type) {
   const { validateField } = useValidation(params, createValidators(params));
   const { controls, values, json } = useControls(params, validateField);
 
-  const Form = (p: PropsWithChildren<{}>) => {
-    return <form>{p.children}</form>;
-  };
+  async function onSubmit() {
+    console.log('SUBMIT FROM HOOK');
+  }
 
   return {
     json,
     values,
-    Form,
+    onSubmit,
     controls,
   };
 }
