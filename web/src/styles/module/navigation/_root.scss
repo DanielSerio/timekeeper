@@ -1,0 +1,6 @@
+.main-nav {
+  &.nested-nav {
+    flex-direction: column;
+    gap: 0;
+  }
+}

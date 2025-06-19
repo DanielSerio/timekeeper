@@ -1,0 +1,16 @@
+.main-nav a {
+  text-decoration: none;
+
+  &.active {
+    color: var(--mantine-color-anchor);
+  }
+
+  &:not(.active) {
+    opacity: 0.7;
+    color: inherit;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
