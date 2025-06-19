@@ -1,0 +1,17 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "#styles/*": ["src/styles/*"],
+      "#routes/*": ["src/routes/*"],
+      "#core/*": ["src/modules/Core/*"],
+      "#categories/*": ["src/modules/Categories/*"],
+      "#timesheets/*": ["src/modules/Timesheets/*"]
+    }
+  }
+}
