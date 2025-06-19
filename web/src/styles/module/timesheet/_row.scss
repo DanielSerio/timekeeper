@@ -1,0 +1,15 @@
+.timesheet-body .row {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 180px repeat(2, 120px) repeat(2, 7ch) 1fr;
+
+  .note {
+    grid-row: 2;
+    grid-column: span 6;
+  }
+
+  .actions {
+    grid-row: 1;
+    grid-column: 6;
+  }
+}

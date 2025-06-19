@@ -8,8 +8,12 @@ export function Timesheet({ id }: { id: number }) {
 
   return (
     <TimesheetProvider timesheet={timesheetQuery.data}>
-      <TimesheetHeader />
-      <TimesheetBody />
+      <div className="timesheet-wrapper">
+        <div className="timesheet">
+          <TimesheetHeader />
+          <TimesheetBody />
+        </div>
+      </div>
     </TimesheetProvider>
   );
 }

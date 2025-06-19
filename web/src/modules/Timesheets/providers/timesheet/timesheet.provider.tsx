@@ -36,7 +36,7 @@ function getTimesheetReducer(
       timesheetId: timesheet.id,
       name: timesheet.name,
       date: timesheet.date,
-      lines: timesheet.lines,
+      lines: timesheet.lines.map((line, idx) => ({ ...line, lineNo: idx })),
       deleteLines: [],
     };
   }
@@ -49,7 +49,13 @@ function getTimesheetReducer(
       case "reset":
         return reset(state);
       case "set-state":
-        return action.payload;
+        return {
+          ...action.payload,
+          lines: action.payload.lines.map((line, idx) => ({
+            ...line,
+            lineNo: idx,
+          })),
+        };
       case "add-lines":
         return addLines(state, action);
       case "set-lines":
@@ -119,8 +125,8 @@ export const TimesheetProvider = ({
     addLines: (...lines: TimesheetLinesPayload["lines"]) => {
       dispatch({ name: "add-lines", payload: { lines } });
     },
-    removeLines: (...lineIds: number[]) => {
-      dispatch({ name: "remove-lines", payload: { lineIds } });
+    removeLines: (...lineNos: number[]) => {
+      dispatch({ name: "remove-lines", payload: { lineNos } });
     },
   } satisfies TimesheetContextMethods;
 

@@ -3,12 +3,14 @@ import type { RemoveLinesAction, TimesheetContextState } from "../types";
 
 export function removeLines(state: TimesheetContextState, action: RemoveLinesAction) {
   const lineNotInDeleteArray = (line: TimesheetLineCreate | TimesheetLineUpdate | TimesheetLineRecord) => {
-    return line.id && !action.payload.lineIds.includes(line.id);
+    if (!(line as TimesheetLineUpdate).lineNo) return false;
+
+    return !action.payload.lineNos.includes((line as TimesheetLineUpdate).lineNo);
   };
 
   return {
     ...state,
-    lines: state.lines.filter(lineNotInDeleteArray),
-    deleteLines: Array.from(new Set([...state.deleteLines, ...action.payload.lineIds]))
+    lines: state.lines.filter(lineNotInDeleteArray).map((line, idx) => ({ ...line, lineNo: idx })),
+    deleteLines: Array.from(new Set([...state.deleteLines, ...action.payload.lineNos]))
   };
 }
