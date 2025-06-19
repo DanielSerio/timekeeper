@@ -7,14 +7,32 @@ import { getEditLineHandlers } from "#timesheets/utilities/get-edit-line-handler
 import type {
   TimesheetLineCreate,
   TimesheetLineRecord,
+  TimesheetLineUpdate,
 } from "#core/types/models/timesheet-line.model-types";
 import { TbPlus, TbTrash } from "react-icons/tb";
 import { resetFields } from "#timesheets/utilities/reset-fields";
 import { classNames } from "#core/utilities/attribute";
 import { constructMessageList } from "#core/utilities/error/construct-message-list";
+import { differenceInMinutes } from "date-fns";
 
 export interface TimesheetBodyComponentProps {
   className?: string | string[];
+}
+
+function getRunningTotal(
+  lines: (TimesheetLineCreate | TimesheetLineRecord | TimesheetLineUpdate)[]
+) {
+  return lines.reduce((sum, line) => {
+    return (
+      sum +
+      Math.abs(
+        differenceInMinutes(
+          new Date(`2024-12-12 ${line.startTime}:00.000`),
+          new Date(`2024-12-12 ${line.endTime}:00.000`)
+        )
+      )
+    );
+  }, 0);
 }
 
 function TimesheetBodyComponent(
@@ -36,6 +54,7 @@ function TimesheetBodyComponent(
   };
 
   const classes = classNames("timesheet-body", className);
+  const totalMinutes = getRunningTotal(timesheetCtx.lines);
 
   return (
     <Box ref={ref} className={classes} {...props}>
@@ -46,9 +65,14 @@ function TimesheetBodyComponent(
             line: ctxLine,
             idx: idx + 1,
           });
+          const runningTotalMinutes = getRunningTotal(
+            timesheetCtx.lines.slice(0, idx)
+          );
+
           return (
             <TimesheetRow
               key={line.id ? `id:${line.id}` : `idx:${idx}`}
+              runningTotalMinutes={runningTotalMinutes}
               line={line}
               onChange={onChange}
             >
@@ -58,7 +82,12 @@ function TimesheetBodyComponent(
             </TimesheetRow>
           );
         })}
-      <TimesheetRow line={newLine} onChange={onNewLineChange} ref={rowRef}>
+      <TimesheetRow
+        line={newLine}
+        onChange={onNewLineChange}
+        ref={rowRef}
+        runningTotalMinutes={totalMinutes}
+      >
         <ActionIcon
           variant="light"
           color="blue"

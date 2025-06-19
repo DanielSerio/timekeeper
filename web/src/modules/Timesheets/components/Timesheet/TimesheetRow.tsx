@@ -12,13 +12,16 @@ import type {
   TimesheetLineUpdate,
 } from "#core/types/models/timesheet-line.model-types";
 import { TimesheetNoteCell } from "./cell/TimesheetNoteCell";
+import { differenceInMinutes, getMinutes } from "date-fns";
 
 function TimesheetRowComponent(
   {
     children,
     line,
+    runningTotalMinutes,
     onChange,
   }: PropsWithChildren<{
+    runningTotalMinutes: number;
     line:
       | TimesheetLineCreate
       | TimesheetLineUpdate
@@ -33,8 +36,16 @@ function TimesheetRowComponent(
   }>,
   ref?: ForwardedRef<HTMLDivElement>
 ) {
-  const startDate = `${line.startTime}:00.000`;
-  const endDate = `${line.endTime}:00.000`;
+  const testDate = `2024-12-12`;
+  const startTime = `${line.startTime}:00.000`;
+  const endTime = `${line.endTime}:00.000`;
+
+  const minutes = Math.abs(
+    differenceInMinutes(
+      new Date(`${testDate} ${startTime}`),
+      new Date(`${testDate} ${endTime}`)
+    )
+  );
 
   return (
     <Box className="row" ref={ref}>
@@ -43,12 +54,15 @@ function TimesheetRowComponent(
         onChange={onChange.categoryId}
       />
       <TimesheetStartTimeCell
-        startTime={startDate}
+        startTime={startTime}
         onChange={onChange.startTime}
       />
-      <TimesheetEndTimeCell endTime={endDate} onChange={onChange.endTime} />
-      <TimeDisplayCell name="line-time" minutes={0} />
-      <TimeDisplayCell name="total-time" minutes={0} />
+      <TimesheetEndTimeCell endTime={endTime} onChange={onChange.endTime} />
+      <TimeDisplayCell name="line-time" minutes={minutes} />
+      <TimeDisplayCell
+        name="total-time"
+        minutes={runningTotalMinutes + minutes}
+      />
       {!!children && <TimesheetCell name="actions">{children}</TimesheetCell>}
       <TimesheetNoteCell note={line.note ?? null} onChange={onChange.note} />
     </Box>
