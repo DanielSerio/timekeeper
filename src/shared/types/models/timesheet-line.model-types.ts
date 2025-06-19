@@ -1,11 +1,11 @@
 import { Pretty } from "../utility";
 
 interface TimesheetLineBasis {
-  timesheetId?: number;
-  categoryId?: number;
+  timesheetId?: number | null;
+  categoryId?: number | null;
   note?: string | null;
-  startTime?: string;
-  endTime?: string;
+  startTime?: string | null;
+  endTime?: string | null;
 }
 
 interface EmptyTimesheetLineBase extends TimesheetLineBasis {
