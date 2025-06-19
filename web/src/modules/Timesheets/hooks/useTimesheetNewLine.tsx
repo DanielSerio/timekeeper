@@ -4,7 +4,29 @@ import type {
 } from "#core/types/models/timesheet-line.model-types";
 import type { TimesheetContextMethods } from "#timesheets/providers/timesheet/types";
 import type { ComboboxItem } from "@mantine/core";
-import { useState, type ChangeEvent } from "react";
+import { useMemo, useState, type ChangeEvent } from "react";
+import { z } from "zod";
+
+const getTimeValidator = (name: "startTime" | "endTime") =>
+  z
+    .string()
+    .length(5)
+    .superRefine((val, ctx) => {
+      if (!/\d{2}[:]\d{2}/g.test(val)) {
+        ctx.addIssue({
+          code: "invalid_date",
+          path: [name],
+          message: `Invalid time`,
+        });
+      }
+    });
+
+const newLineValidator = z.object({
+  categoryId: z.number().int().positive(),
+  startTime: getTimeValidator("startTime"),
+  endTime: getTimeValidator("endTime"),
+  note: z.string().trim().nullable(),
+});
 
 export function useTimesheetNewLine({ addLines }: TimesheetContextMethods) {
   const [line, _setLine] = useState<EmptyTimesheetLine | TimesheetLineCreate>({
@@ -13,6 +35,10 @@ export function useTimesheetNewLine({ addLines }: TimesheetContextMethods) {
     endTime: null,
     note: "",
   });
+  const validLine = useMemo(
+    () => newLineValidator.safeParse(line),
+    [line.categoryId, line.startTime, line.endTime, line.note]
+  );
 
   const setLine = _setLine;
 
@@ -70,7 +96,10 @@ export function useTimesheetNewLine({ addLines }: TimesheetContextMethods) {
   };
 
   return [
-    line,
+    {
+      line,
+      validLine,
+    },
     {
       setLineField,
       setLine,

@@ -49,8 +49,8 @@ function TimesheetRowComponent(
       <TimesheetEndTimeCell endTime={endDate} onChange={onChange.endTime} />
       <TimeDisplayCell name="line-time" minutes={0} />
       <TimeDisplayCell name="total-time" minutes={0} />
-      <TimesheetNoteCell note={line.note ?? null} onChange={onChange.note} />
       {!!children && <TimesheetCell name="actions">{children}</TimesheetCell>}
+      <TimesheetNoteCell note={line.note ?? null} onChange={onChange.note} />
     </Box>
   );
 }

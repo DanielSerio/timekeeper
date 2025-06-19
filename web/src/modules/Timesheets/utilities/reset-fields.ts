@@ -14,12 +14,10 @@ export function resetFields(ref?: RefObject<HTMLDivElement | null>) {
 
     const all = [...inputs, ...textareas, ...selects];
 
-    console.log({
-      inputs,
-      textareas,
-      selects
-    });
-
     all.forEach((inpt) => (inpt as HTMLInputElement).value = '');
+
+    const firstField = selects.item(0) as HTMLInputElement;
+
+    firstField.focus();
   }
 }

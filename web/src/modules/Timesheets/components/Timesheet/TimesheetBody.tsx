@@ -21,7 +21,7 @@ function TimesheetBodyComponent(
   ref?: ForwardedRef<HTMLDivElement>
 ) {
   const [timesheetCtx, timesheetMethods] = useTimesheetContext();
-  const [newLine, { onChange: onNewLineChange, onAdd }] =
+  const [{ line: newLine, validLine }, { onChange: onNewLineChange, onAdd }] =
     useTimesheetNewLine(timesheetMethods);
 
   const rowRef = useRef<HTMLDivElement>(null);
@@ -55,7 +55,13 @@ function TimesheetBodyComponent(
           );
         })}
       <TimesheetRow line={newLine} onChange={onNewLineChange} ref={rowRef}>
-        <ActionIcon variant="light" color="blue" size="sm" onClick={onAddLine}>
+        <ActionIcon
+          variant="light"
+          color="blue"
+          size="sm"
+          onClick={onAddLine}
+          disabled={!!validLine.error}
+        >
           <TbPlus />
         </ActionIcon>
       </TimesheetRow>

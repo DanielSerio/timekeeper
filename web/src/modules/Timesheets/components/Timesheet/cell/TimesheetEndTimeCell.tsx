@@ -1,6 +1,6 @@
 import { TextInput } from "@mantine/core";
 import { TimesheetCell } from "./TimesheetCell";
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, KeyboardEvent } from "react";
 
 export function TimesheetEndTimeCell({
   endTime,
@@ -15,7 +15,7 @@ export function TimesheetEndTimeCell({
         size="xs"
         type="time"
         defaultValue={endTime}
-        onBlur={onChange}
+        onBlurCapture={onChange}
       />
     </TimesheetCell>
   );
