@@ -1,9 +1,10 @@
 import { Page } from "#core/components/Page";
+import { Timesheet } from "#timesheets/components/Timesheet/Timesheet";
 
-export function TimesheetPage() {
+export function TimesheetPage({ id }: { id: number }) {
   return (
     <Page>
-      <div>TimesheetPage</div>
+      <Timesheet id={id} />
     </Page>
   );
 }
