@@ -16,7 +16,7 @@ interface EmptyTimesheetLineBase extends TimesheetLineBasis {
   endTime: string | null;
 }
 interface CreateTimesheetLineBase extends TimesheetLineBasis {
-  timesheetId: number;
+  timesheetId?: number;
   categoryId: number;
   startTime: string;
   endTime: string;
