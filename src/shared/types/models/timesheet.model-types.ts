@@ -1,6 +1,6 @@
 import { CreateTimesheetLineDto } from "src/timesheets/dto/create-timesheet.dto";
 import { Pretty } from "../utility";
-import { TimesheeLineCreate } from "./timesheet-line.model-types";
+import { TimesheetLineCreate } from "./timesheet-line.model-types";
 
 interface TimesheetBasis {
   date?: Date;
@@ -18,7 +18,7 @@ interface TimesheetUpdateBase extends TimesheetBasis {
 }
 
 interface TimesheetRecordBase extends TimesheetCreateBase {
-  name: string | null;
+  name: string;
   id: number;
   lastUpdatedAt: Date | null;
 }
@@ -27,4 +27,4 @@ export type TimesheetCreate = Pretty<TimesheetCreateBase>;
 export type TimesheetUpdate = Pretty<TimesheetUpdateBase>;
 export type TimesheetRecord = Pretty<TimesheetRecordBase>;
 
-export type ExtendedTimesheetCreate = Pretty<TimesheetCreateBase & { lines: TimesheeLineCreate[]; }>;
+export type ExtendedTimesheetCreate = Pretty<TimesheetCreateBase & { lines: TimesheetLineCreate[]; }>;

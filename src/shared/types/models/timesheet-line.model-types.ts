@@ -40,7 +40,7 @@ interface RecordTimesheetLineBase extends TimesheetLineBasis {
   note: string | null;
 }
 
-export type EmptyTimesheeLine = Pretty<EmptyTimesheetLineBase>;
-export type TimesheeLineCreate = Pretty<CreateTimesheetLineBase>;
-export type TimesheeLineUpdate = Pretty<UpdateTimesheetLineBase>;
-export type TimesheeLineRecord = Pretty<RecordTimesheetLineBase>;
+export type EmptyTimesheetLine = Pretty<EmptyTimesheetLineBase>;
+export type TimesheetLineCreate = Pretty<CreateTimesheetLineBase>;
+export type TimesheetLineUpdate = Pretty<UpdateTimesheetLineBase>;
+export type TimesheetLineRecord = Pretty<RecordTimesheetLineBase>;

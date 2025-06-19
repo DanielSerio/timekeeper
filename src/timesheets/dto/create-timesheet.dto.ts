@@ -1,7 +1,7 @@
-import { TimesheeLineCreate } from "#shared/types/models/timesheet-line.model-types";
+import { TimesheetLineCreate } from "#shared/types/models/timesheet-line.model-types";
 import { TimesheetCreate } from "#shared/types/models/timesheet.model-types";
 
-export class CreateTimesheetLineDto implements TimesheeLineCreate {
+export class CreateTimesheetLineDto implements TimesheetLineCreate {
   categoryId: number;
   startTime: string;
   endTime: string;
