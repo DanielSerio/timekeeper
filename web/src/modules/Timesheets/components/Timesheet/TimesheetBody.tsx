@@ -11,6 +11,7 @@ import type {
 import { TbPlus, TbTrash } from "react-icons/tb";
 import { resetFields } from "#timesheets/utilities/reset-fields";
 import { classNames } from "#core/utilities/attribute";
+import { constructMessageList } from "#core/utilities/error/construct-message-list";
 
 export interface TimesheetBodyComponentProps {
   className?: string | string[];
@@ -22,7 +23,10 @@ function TimesheetBodyComponent(
 ) {
   const [timesheetCtx, timesheetMethods] = useTimesheetContext();
   const [{ line: newLine, validLine }, { onChange: onNewLineChange, onAdd }] =
-    useTimesheetNewLine(timesheetMethods);
+    useTimesheetNewLine({
+      timesheetContext: timesheetCtx,
+      timesheetMethods,
+    });
 
   const rowRef = useRef<HTMLDivElement>(null);
 
@@ -60,7 +64,12 @@ function TimesheetBodyComponent(
           color="blue"
           size="sm"
           onClick={onAddLine}
-          disabled={!!validLine.error}
+          disabled={!validLine.record}
+          title={
+            !!validLine.error
+              ? constructMessageList(validLine.error)
+              : undefined
+          }
         >
           <TbPlus />
         </ActionIcon>

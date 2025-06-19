@@ -1,9 +1,15 @@
 import type {
   EmptyTimesheetLine,
   TimesheetLineCreate,
+  TimesheetLineRecord,
 } from "#core/types/models/timesheet-line.model-types";
-import type { TimesheetContextMethods } from "#timesheets/providers/timesheet/types";
+import type {
+  TimesheetContextMethods,
+  TimesheetContextState,
+} from "#timesheets/providers/timesheet/types";
+import { canAddLine } from "#timesheets/utilities/can-add-line";
 import type { ComboboxItem } from "@mantine/core";
+import { isAfter, isSameDay, isSameMinute } from "date-fns";
 import { useMemo, useState, type ChangeEvent } from "react";
 import { z } from "zod";
 
@@ -28,17 +34,73 @@ const newLineValidator = z.object({
   note: z.string().trim().nullable(),
 });
 
-export function useTimesheetNewLine({ addLines }: TimesheetContextMethods) {
+export function useTimesheetNewLine({
+  timesheetContext: state,
+  timesheetMethods: { addLines },
+}: {
+  timesheetContext: TimesheetContextState;
+  timesheetMethods: TimesheetContextMethods;
+}) {
   const [line, _setLine] = useState<EmptyTimesheetLine | TimesheetLineCreate>({
     categoryId: null,
     startTime: null,
     endTime: null,
     note: "",
   });
-  const validLine = useMemo(
-    () => newLineValidator.safeParse(line),
-    [line.categoryId, line.startTime, line.endTime, line.note]
-  );
+  const validLine = useMemo(() => {
+    const parsed = newLineValidator
+      .superRefine((record, ctx) => {
+        const { overlap } = canAddLine(
+          {
+            categoryId: record.categoryId!,
+            startTime: record.startTime!,
+            endTime: record.endTime!,
+            note: record.note,
+          },
+          state.lines as (TimesheetLineCreate | TimesheetLineRecord)[]
+        );
+        const testDate = `2024-12-12`;
+        const start = `${testDate} ${record.startTime}`;
+        const end = `${testDate} ${record.endTime}`;
+
+        if (isAfter(start, end)) {
+          ctx.addIssue({
+            code: "custom",
+            message: `End time cannot be before start time`,
+            path: ["endTime"],
+          });
+        }
+
+        if (isSameMinute(start, end)) {
+          ctx.addIssue({
+            code: "custom",
+            message: `Interval must have a duration`,
+            path: ["endTime"],
+          });
+        }
+
+        if (overlap) {
+          ctx.addIssue({
+            code: "custom",
+            message: `Lines overlap: ${(overlap.line as any).lineNo ?? overlap.index + 1}`,
+            path: ["startTime", "endTime"],
+          });
+        }
+      })
+      .safeParse(line);
+
+    if (parsed.success) {
+      return {
+        record: parsed.data!,
+        error: null,
+      };
+    }
+
+    return {
+      record: null,
+      error: parsed.error!,
+    };
+  }, [line.categoryId, line.startTime, line.endTime, line.note]);
 
   const setLine = _setLine;
 
