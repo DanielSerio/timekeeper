@@ -21,11 +21,19 @@ export function TimesheetCategoryCell({
           },
           {
             value: "1",
-            label: "Category #1",
+            label: "Meeting",
           },
           {
             value: "2",
-            label: "Category #2",
+            label: "Development",
+          },
+          {
+            value: "3",
+            label: "Deployment",
+          },
+          {
+            value: "4",
+            label: "Work Session",
           },
         ]}
       />
