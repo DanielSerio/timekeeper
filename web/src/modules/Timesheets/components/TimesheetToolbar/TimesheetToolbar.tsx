@@ -13,7 +13,13 @@ export function TimesheetToolbar({
   viewTimesheetController: ReturnType<typeof useViewTimesheetMode>;
 }) {
   return (
-    <Flex align="center" justify="space-between" p="xs">
+    <Flex
+      className="timesheet-toolbar"
+      align="center"
+      justify="space-between"
+      p="xs"
+      h={48}
+    >
       <Switch
         label="Edit Mode"
         checked={isEditMode}
@@ -27,6 +33,7 @@ export function TimesheetToolbar({
       />
       {!isEditMode && (
         <SegmentedControl
+          size="xs"
           data={["By Time", "By Category"]}
           value={viewMode}
           onChange={(value) => setViewMode(value as ViewTimesheetMode)}
