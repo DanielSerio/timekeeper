@@ -40,17 +40,14 @@ export function CategoryTimesheetLineGroup({
           </Badge>
           <Box className="span" />
           <Box>
-            <Text c="#ffd43baa" style={{ fontSize: "inherit" }}>
-              <TimeDisplayCell name="line-time" minutes={total} />
-            </Text>
+            <TimeDisplayCell c="#ffd43baa" name="line-time" minutes={total} />
           </Box>
           <Box>
-            <Text c="yellow" style={{ fontSize: "inherit" }}>
-              <TimeDisplayCell
-                name="total-time"
-                minutes={runningTotalMinutes + total}
-              />
-            </Text>
+            <TimeDisplayCell
+              c="yellow"
+              name="total-time"
+              minutes={runningTotalMinutes + total}
+            />
           </Box>
         </CategoryTimesheetLine>
       </Box>

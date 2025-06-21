@@ -1,9 +1,11 @@
 import { pad } from "#core/utilities/string";
+import { Text } from "@mantine/core";
 import { TimesheetCell } from "./TimesheetCell";
 
 export interface TimeDisplayProps {
   name: "line-time" | "total-time";
   minutes: number;
+  c?: string;
 }
 
 function renderTime(minutes: number): string {
@@ -17,6 +19,12 @@ function renderTime(minutes: number): string {
   return `${pad(hours)}:${pad(mins)}`;
 }
 
-export function TimeDisplayCell({ name, minutes }: TimeDisplayProps) {
-  return <TimesheetCell name={name}>{renderTime(minutes)}</TimesheetCell>;
+export function TimeDisplayCell({ name, minutes, c }: TimeDisplayProps) {
+  return (
+    <TimesheetCell name={name}>
+      <Text c={c} style={{ fontSize: "inherit" }}>
+        {renderTime(minutes)}
+      </Text>
+    </TimesheetCell>
+  );
 }

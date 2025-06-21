@@ -65,20 +65,14 @@ export function ViewTimeTimesheet({
                   <Box>{line.startTime}</Box>
                   <Box>{line.endTime}</Box>
                   <Box>
-                    <Text style={{ fontSize: "inherit" }}>
-                      <TimeDisplayCell name="line-time" minutes={total} />
-                    </Text>
+                    <TimeDisplayCell name="line-time" minutes={total} />
                   </Box>
                   <Box>
-                    <Text
+                    <TimeDisplayCell
                       c={idx === lines.length - 1 ? "yellow" : undefined}
-                      style={{ fontSize: "inherit" }}
-                    >
-                      <TimeDisplayCell
-                        name="total-time"
-                        minutes={runningTotalMinutes + total}
-                      />
-                    </Text>
+                      name="total-time"
+                      minutes={runningTotalMinutes + total}
+                    />
                   </Box>
                 </TimeTimesheetLine>
               </Fragment>

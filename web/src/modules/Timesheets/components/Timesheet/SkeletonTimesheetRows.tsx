@@ -43,18 +43,10 @@ function TimeSkeletonTimesheetRow({ note }: { note?: boolean }) {
       )}
       <SkeletonTimesheetLine>
         <Skeleton w="20ch" h={"100%"} />
-        <Text style={{ fontSize: "inherit" }}>
-          <Skeleton mt={3} w="7ch" h={18} />
-        </Text>
-        <Text style={{ fontSize: "inherit" }}>
-          <Skeleton mt={3} w="7ch" h={18} />
-        </Text>
-        <Text style={{ fontSize: "inherit" }}>
-          <Skeleton mt={3} w="7ch" h={18} />
-        </Text>
-        <Text style={{ fontSize: "inherit" }}>
-          <Skeleton mt={3} w="7ch" h={18} />
-        </Text>
+        <Skeleton mt={3} w="7ch" h={18} />
+        <Skeleton mt={3} w="7ch" h={18} />
+        <Skeleton mt={3} w="7ch" h={18} />
+        <Skeleton mt={3} w="7ch" h={18} />
       </SkeletonTimesheetLine>
     </>
   );
@@ -69,18 +61,10 @@ function CategorySkeletonTimesheetRow({ note }: { note?: boolean }) {
       )}
       <SkeletonTimesheetLine>
         <Skeleton w="20ch" h={"100%"} />
-        <Text style={{ fontSize: "inherit" }}>
-          <Skeleton mt={3} w="7ch" h={18} />
-        </Text>
-        <Text style={{ fontSize: "inherit" }}>
-          <Skeleton mt={3} w="7ch" h={18} />
-        </Text>
-        <Text style={{ fontSize: "inherit" }}>
-          <Skeleton mt={3} w="7ch" h={18} />
-        </Text>
-        <Text style={{ fontSize: "inherit" }}>
-          <Skeleton mt={3} w="7ch" h={18} />
-        </Text>
+        <Skeleton mt={3} w="7ch" h={18} />
+        <Skeleton mt={3} w="7ch" h={18} />
+        <Skeleton mt={3} w="7ch" h={18} />
+        <Skeleton mt={3} w="7ch" h={18} />
       </SkeletonTimesheetLine>
     </>
   );
