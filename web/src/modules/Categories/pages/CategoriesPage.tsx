@@ -1,9 +1,10 @@
+import { CategoriesTable } from "#categories/components/CategoriesTable";
 import { Page } from "#core/components/Page";
 
 export function CategoriesPage() {
   return (
     <Page>
-      <div>CategoriesPage</div>
+      <CategoriesTable />
     </Page>
   );
 }
