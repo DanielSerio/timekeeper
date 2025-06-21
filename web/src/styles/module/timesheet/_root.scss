@@ -1,8 +1,13 @@
 .timesheet-wrapper {
   container-name: timesheet-container;
-  container-type: size;
+  container-type: inline-size;
 }
 
 .timesheet {
   overflow-x: auto;
+}
+
+.timesheet,
+.view-timesheet {
+  font-size: 0.8rem;
 }

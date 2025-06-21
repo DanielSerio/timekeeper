@@ -19,7 +19,7 @@ export interface TimesheetBodyComponentProps {
   className?: string | string[];
 }
 
-function getRunningTotal(
+export function getRunningTotal(
   lines: (TimesheetLineCreate | TimesheetLineRecord | TimesheetLineUpdate)[]
 ) {
   return lines.reduce((sum, line) => {

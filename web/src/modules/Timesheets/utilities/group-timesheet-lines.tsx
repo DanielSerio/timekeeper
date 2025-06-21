@@ -11,12 +11,12 @@ type TimesheetLines = (
   | TimesheetLineUpdate
 )[];
 
-interface TimeGroupedTimesheet {
+export interface TimeGroupedTimesheet {
   [k: string]: TimesheetLines;
   time: TimesheetLines;
 }
 
-interface CategoryGroupedTimesheet {
+export interface CategoryGroupedTimesheet {
   [k: number]: TimesheetLines;
 }
 
@@ -32,7 +32,7 @@ export function groupTimesheetLines(
   if (groupBy === "By Time") {
     return {
       time: lines,
-    };
+    } as TimeGroupedTimesheet;
   }
 
   const grouped: CategoryGroupedTimesheet = {};

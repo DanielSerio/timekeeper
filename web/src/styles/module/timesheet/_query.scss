@@ -1,0 +1,15 @@
+@container timesheet-container (max-width: 660px) {
+  .view-timesheet.category .line,
+  .view-timesheet.time .line {
+    display: flex;
+    flex-direction: column;
+
+    .mantine-Badge-root {
+      width: 100%;
+    }
+
+    &.note-line::after {
+      height: 0;
+    }
+  }
+}

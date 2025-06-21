@@ -1,0 +1,52 @@
+.view-timesheet .line {
+  background-color: var(--mantine-color-dark-8);
+  display: grid;
+  border-bottom: 1px solid var(--mantine-color-default-border);
+  min-height: 26px;
+
+  .mantine-Badge-root {
+    width: 20ch;
+  }
+
+  &.note-line {
+    border: none;
+    position: relative;
+    width: 100%;
+
+    &::after {
+      position: absolute;
+      content: " ";
+      display: block;
+      height: 1px;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      background-image: linear-gradient(
+        90deg,
+        var(--mantine-color-default-border) 25%,
+        transparent 0%
+      );
+      background-size: 12px 100%;
+      background-repeat: repeat-x;
+    }
+
+    & > div {
+      grid-column: span 5;
+    }
+  }
+
+  .span {
+    grid-column: span 2;
+  }
+}
+
+.view-timesheet .line-header .line {
+  background-color: var(--mantine-color-dark-7);
+}
+
+.view-timesheet.category .line {
+  grid-template-columns: 180px 120px 120px 120px 120px;
+}
+.view-timesheet.time .line {
+  grid-template-columns: 180px 120px 120px 120px 120px;
+}
