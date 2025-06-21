@@ -6,9 +6,11 @@ import type {
 import { Flex, SegmentedControl, Switch } from "@mantine/core";
 
 export function TimesheetToolbar({
+  isLoading,
   editModeController: [isEditMode, { open, close }],
   viewTimesheetController: [viewMode, setViewMode],
 }: {
+  isLoading?: boolean;
   editModeController: ReturnType<typeof useTimesheetEditMode>;
   viewTimesheetController: ReturnType<typeof useViewTimesheetMode>;
 }) {
@@ -23,6 +25,7 @@ export function TimesheetToolbar({
       <Switch
         label="Edit Mode"
         checked={isEditMode}
+        disabled={isLoading}
         onChange={(ev) => {
           if (ev.currentTarget.checked) {
             open();

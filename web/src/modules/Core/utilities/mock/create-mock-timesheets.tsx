@@ -101,7 +101,7 @@ function createMockTimesheetLines({
   }));
 }
 
-type MockTimesheet = Omit<ExtendedTimesheetRecord, "lines"> & {
+export type MockTimesheet = Omit<ExtendedTimesheetRecord, "lines"> & {
   lines: Omit<TimesheetLineRecord, "lineNo">[];
 };
 

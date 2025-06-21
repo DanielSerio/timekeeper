@@ -1,4 +1,4 @@
-import { createMockTimesheets } from "#core/utilities/mock";
+import { createMockTimesheets, type MockTimesheet } from "#core/utilities/mock";
 import { useQuery } from "@tanstack/react-query";
 
 const { categories, timesheets } = createMockTimesheets(3);
@@ -10,7 +10,9 @@ export function useTimesheet(id: number) {
     queryKey: ["timesheet", id],
     async queryFn() {
       //TODO: this. currently returning mock data
-      return timesheets[2];
+      return await new Promise<MockTimesheet>((resolve) => {
+        setTimeout(() => resolve(timesheets[2]), 600);
+      });
     },
   });
 }

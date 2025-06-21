@@ -17,6 +17,7 @@ import { differenceInMinutes } from "date-fns";
 
 export interface TimesheetBodyComponentProps {
   className?: string | string[];
+  isLoading?: boolean;
 }
 
 export function getRunningTotal(

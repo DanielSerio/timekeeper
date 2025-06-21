@@ -18,13 +18,17 @@ export function TimesheetPage({ id }: { id: number }) {
     <TimesheetProvider timesheet={timesheetQuery.data}>
       <Page>
         <TimesheetToolbar
+          isLoading={timesheetQuery.isLoading}
           editModeController={editModeController}
           viewTimesheetController={viewTimesheetController}
         />
         {isEditMode ? (
-          <Timesheet />
+          <Timesheet isLoading={timesheetQuery.isLoading} />
         ) : (
-          <ViewTimesheet viewTimesheetController={viewTimesheetController} />
+          <ViewTimesheet
+            isLoading={timesheetQuery.isLoading}
+            viewTimesheetController={viewTimesheetController}
+          />
         )}
       </Page>
     </TimesheetProvider>

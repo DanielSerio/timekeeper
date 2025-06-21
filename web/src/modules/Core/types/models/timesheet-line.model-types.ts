@@ -25,7 +25,7 @@ interface CreateTimesheetLineBase extends TimesheetLineBasis {
 }
 interface UpdateTimesheetLineBase extends TimesheetLineBasis {
   id?: number | null;
-  lineNo: number;
+  lineNo?: number;
   timesheetId?: never;
   categoryId?: number;
   startTime?: string;
@@ -34,7 +34,7 @@ interface UpdateTimesheetLineBase extends TimesheetLineBasis {
 }
 interface RecordTimesheetLineBase extends TimesheetLineBasis {
   id: number;
-  lineNo: number;
+  lineNo?: number;
   createdAt: Date;
   lastUpdatedAt: Date | null;
   timesheetId: number;
