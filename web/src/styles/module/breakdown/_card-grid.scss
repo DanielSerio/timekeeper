@@ -1,0 +1,36 @@
+.card-grid {
+  position: relative;
+  border: 1px solid transparent;
+  display: grid;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+// medium screens
+@media screen and (min-width: 660px) {
+  .card-grid {
+    &.test-cards {
+      grid-template-columns: 1fr 1fr;
+
+      .mantine-Card-root:last-of-type {
+        grid-column: span 2;
+      }
+    }
+  }
+}
+
+// large screens
+@media screen and (min-width: 880px) {
+  .card-grid {
+    &.test-cards {
+      grid-template-columns: 1fr 1fr 1fr;
+
+      .mantine-Card-root:last-of-type {
+        grid-column: auto;
+      }
+    }
+  }
+}

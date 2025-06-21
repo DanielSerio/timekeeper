@@ -26,7 +26,8 @@
       "#routes/*": ["src/routes/*"],
       "#core/*": ["src/modules/Core/*"],
       "#categories/*": ["src/modules/Categories/*"],
-      "#timesheets/*": ["src/modules/Timesheets/*"]
+      "#timesheets/*": ["src/modules/Timesheets/*"],
+      "#breakdown/*": ["src/modules/Breakdown/*"]
     }
   },
   "include": ["vite.config.ts"]

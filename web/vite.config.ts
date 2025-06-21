@@ -20,7 +20,8 @@ export default defineConfig({
       '#routes/*': path.resolve(__dirname, 'src/routes'),
       '#core/*': path.resolve(__dirname, 'src/modules/Core'),
       '#categories/*': path.resolve(__dirname, 'src/modules/Categories'),
-      '#timesheets/*': path.resolve(__dirname, 'src/modules/Timesheets')
+      '#timesheets/*': path.resolve(__dirname, 'src/modules/Timesheets'),
+      "#breakdown/*": path.resolve(__dirname, 'src/modules/Breakdown'),
     }
   }
 });

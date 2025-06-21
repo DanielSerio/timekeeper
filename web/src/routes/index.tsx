@@ -1,5 +1,6 @@
-import { BreakdownPage } from "#core/pages/BreakdownPage";
+import { BreakdownPage } from "#breakdown/pages/BreakdownPage";
 import { createFileRoute } from "@tanstack/react-router";
+import "#styles/output/breakdown.scss";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
