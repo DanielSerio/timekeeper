@@ -5,12 +5,12 @@ export function removeLines(state: TimesheetContextState, action: RemoveLinesAct
   const lineNotInDeleteArray = (line: TimesheetLineCreate | TimesheetLineUpdate | TimesheetLineRecord) => {
     if (!(line as TimesheetLineUpdate).lineNo) return false;
 
-    return !action.payload.lineNos.includes((line as TimesheetLineUpdate).lineNo);
+    return !action.payload.lineNos.includes((line as TimesheetLineUpdate).lineNo!);
   };
 
   return {
     ...state,
-    lines: state.lines.filter(lineNotInDeleteArray).map((line, idx) => ({ ...line, lineNo: idx })),
+    lines: state.lines.filter(lineNotInDeleteArray).map((line, idx) => ({ ...line, lineNo: idx + 1 })),
     deleteLines: Array.from(new Set([...state.deleteLines, ...action.payload.lineNos]))
   };
 }

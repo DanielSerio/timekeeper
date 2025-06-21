@@ -36,7 +36,7 @@ function getTimesheetReducer(
       timesheetId: timesheet.id,
       name: timesheet.name,
       date: timesheet.date,
-      lines: timesheet.lines.map((line, idx) => ({ ...line, lineNo: idx })),
+      lines: timesheet.lines.map((line, idx) => ({ ...line, lineNo: idx + 1 })),
       deleteLines: [],
     };
   }
@@ -53,7 +53,7 @@ function getTimesheetReducer(
           ...action.payload,
           lines: action.payload.lines.map((line, idx) => ({
             ...line,
-            lineNo: idx,
+            lineNo: idx + 1,
           })),
         };
       case "add-lines":
