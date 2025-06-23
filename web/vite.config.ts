@@ -14,6 +14,9 @@ export default defineConfig({
     }),
     react()
   ],
+  server: {
+    host: true,
+  },
   resolve: {
     alias: {
       '#styles/*': path.resolve(__dirname, 'src/styles'),
