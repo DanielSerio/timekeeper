@@ -5,5 +5,9 @@ export function TableRow({
   children,
   gridTemplateColumns,
 }: PropsWithChildren<{ gridTemplateColumns: string }>) {
-  return <Box style={{ gridTemplateColumns }}>{children}</Box>;
+  return (
+    <Box className="table-row" style={{ gridTemplateColumns }}>
+      {children}
+    </Box>
+  );
 }

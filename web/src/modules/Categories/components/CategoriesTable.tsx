@@ -10,12 +10,17 @@ export function CategoriesTable() {
   const categoriesQuery = useCategories();
   const {
     gridTemplateColumns,
+    rowSelectionController: [rowSelection, setRowSelection],
     editModeController: [isEditMode, setIsEditMode],
     table,
   } = useTable({
     columns: CATEGORY_COLUMNS,
     query: categoriesQuery,
   });
+
+  const onActionClick = () => {
+    alert("clicked");
+  };
 
   return (
     <>
@@ -47,12 +52,23 @@ export function CategoriesTable() {
                 >
                   {allCells.flatMap((cell) => {
                     const columnId = cell.column.columnDef.id!;
-                    console.info(columnId);
 
                     if (columnId === "select") {
                       return (
                         <Box key={cell.id}>
-                          <Checkbox />
+                          <Checkbox
+                            checked={rowSelection[row.index] ?? false}
+                            onChange={(ev) => {
+                              if (ev.currentTarget.checked) {
+                                setRowSelection((current) => {
+                                  return {
+                                    ...current,
+                                    [row.index]: true,
+                                  };
+                                });
+                              }
+                            }}
+                          />
                         </Box>
                       );
                     }
@@ -60,7 +76,10 @@ export function CategoriesTable() {
                     if (isActionColumn(columnId, CATEGORY_COLUMNS)) {
                       return (
                         <Box key={cell.id}>
-                          <Button disabled={!isEditMode}>
+                          <Button
+                            disabled={!isEditMode}
+                            onClick={onActionClick}
+                          >
                             {cell.renderValue() as ReactNode}
                           </Button>
                         </Box>
