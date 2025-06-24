@@ -8,6 +8,10 @@
     flex-direction: column;
   }
 
+  .table-cell {
+    border-bottom: 1px dotted var(--mantine-color-default-border);
+  }
+
   .table-cell .label {
     display: inline-flex;
   }

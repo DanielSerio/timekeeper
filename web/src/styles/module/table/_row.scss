@@ -2,3 +2,7 @@
 .table-section.head {
   display: grid;
 }
+
+.table-row:nth-child(odd) {
+  background-color: var(--mantine-color-dark-8);
+}

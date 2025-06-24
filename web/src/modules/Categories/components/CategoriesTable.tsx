@@ -76,7 +76,10 @@ export function CategoriesTable() {
 
                     if (isActionColumn(columnId, CATEGORY_COLUMNS)) {
                       return (
-                        <Box key={cell.id}>
+                        <CategoriesTableCell
+                          name={cell.column.columnDef.header as string}
+                          key={cell.id}
+                        >
                           <Button
                             className="cell-action"
                             size="compact-xs"
@@ -85,7 +88,7 @@ export function CategoriesTable() {
                           >
                             {cell.renderValue() as ReactNode}
                           </Button>
-                        </Box>
+                        </CategoriesTableCell>
                       );
                     }
 
