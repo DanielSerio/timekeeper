@@ -15,4 +15,13 @@
   .table-cell .label {
     display: inline-flex;
   }
+
+  .table .table-cell {
+    &.align-center,
+    &.align-right {
+      width: 100%;
+      text-align: left;
+      justify-content: space-between;
+    }
+  }
 }
