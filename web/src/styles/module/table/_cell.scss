@@ -1,10 +1,6 @@
 .table-cell,
 .header-cell {
   min-height: 24px;
-
-  &:not(:last-of-type) {
-    border-right: 1px solid var(--mantine-color-default-border);
-  }
 }
 
 .header-cell,
@@ -12,6 +8,10 @@
 .checkbox-cell {
   display: flex;
   align-items: center;
+
+  &:not(:last-of-type) {
+    border-right: 1px solid var(--mantine-color-default-border);
+  }
 }
 
 .header-cell {

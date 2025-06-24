@@ -26,4 +26,11 @@
       justify-content: space-between;
     }
   }
+
+  .table .checkbox-cell {
+    width: 100%;
+    text-align: left;
+    justify-content: flex-start;
+    padding: 6px;
+  }
 }
