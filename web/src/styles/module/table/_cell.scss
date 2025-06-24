@@ -1,8 +1,32 @@
-.table-cell {
+.table-cell,
+.header-cell {
+  min-height: 24px;
+
+  &.align-center {
+    justify-content: center;
+
+    .label,
+    .value {
+      text-align: center;
+    }
+  }
+}
+
+.header-cell,
+.table-cell,
+.checkbox-cell {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+}
+
+.header-cell {
+  padding: 0 6px;
+}
+
+.table-cell {
+  justify-content: space-between;
   max-height: 24px;
+  width: 100%;
 
   .label,
   .value {
@@ -10,6 +34,12 @@
   }
 }
 
+.checkbox-cell {
+  text-align: center;
+  justify-content: center;
+}
+
+//action cell
 .cell-action {
   &:disabled {
     opacity: 1;

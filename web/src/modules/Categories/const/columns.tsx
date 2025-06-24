@@ -8,6 +8,7 @@ export const CATEGORY_COLUMNS: CustomColumnDef<CategoryRecord>[] = [
     id: "id",
     header: "ID",
     size: 64,
+    align: "center",
     accessorKey: "id",
     accessorFn(row) {
       return row.id;

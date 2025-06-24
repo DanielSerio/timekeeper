@@ -6,6 +6,8 @@ import { isActionColumn } from "#core/utilities/table";
 import { Box, Button, Checkbox, Flex, Switch } from "@mantine/core";
 import type { ReactNode } from "react";
 import { CategoriesTableCell } from "./CategoriesTableCell";
+import { getColumnAlign } from "#core/utilities/table/get-column-align";
+import { classNames } from "#core/utilities/attribute";
 
 export function CategoriesTable() {
   const categoriesQuery = useCategories();
@@ -35,9 +37,27 @@ export function CategoriesTable() {
       <Table name="category">
         <Table.TableHead gridTemplateColumns={gridTemplateColumns}>
           {table.getVisibleLeafColumns().map((col) => {
+            const columnId = col.columnDef.id!;
             const headerText = col.columnDef.header! as string; // header is always defined due to our custom type
+            const align = getColumnAlign(columnId, CATEGORY_COLUMNS);
+            const classes = classNames(
+              "header-cell",
+              headerText === "" ? `checkbox-cell` : null,
+              align ? `align-${align}` : null
+            );
+            if (headerText === "") {
+              return (
+                <Box className={classes} key={col.id}>
+                  <Checkbox size="xs" />
+                </Box>
+              );
+            }
 
-            return <Box key={col.id}>{headerText}</Box>;
+            return (
+              <Box className={classes} key={col.id}>
+                {headerText}
+              </Box>
+            );
           })}
         </Table.TableHead>
         <Table.TableBody>
@@ -45,7 +65,7 @@ export function CategoriesTable() {
             !!categoriesQuery.data &&
             table.getRowModel().flatRows.map((row) => {
               const allCells = row.getVisibleCells();
-              console.info("allCells", allCells);
+
               return (
                 <Table.TableRow
                   key={row.id}
@@ -53,11 +73,23 @@ export function CategoriesTable() {
                 >
                   {allCells.flatMap((cell) => {
                     const columnId = cell.column.columnDef.id!;
+                    const isActionCol = isActionColumn(
+                      columnId,
+                      CATEGORY_COLUMNS
+                    );
+                    const align = getColumnAlign(columnId, CATEGORY_COLUMNS);
 
                     if (columnId === "select") {
                       return (
-                        <Box key={cell.id}>
+                        <Box
+                          className={classNames(
+                            `checkbox-cell`,
+                            align ? `align-${align}` : null
+                          )}
+                          key={cell.id}
+                        >
                           <Checkbox
+                            size="xs"
                             checked={rowSelection[row.index] ?? false}
                             onChange={(ev) => {
                               if (ev.currentTarget.checked) {
@@ -74,10 +106,11 @@ export function CategoriesTable() {
                       );
                     }
 
-                    if (isActionColumn(columnId, CATEGORY_COLUMNS)) {
+                    if (isActionCol) {
                       return (
                         <CategoriesTableCell
                           name={cell.column.columnDef.header as string}
+                          align={align}
                           key={cell.id}
                         >
                           <Button
@@ -95,6 +128,7 @@ export function CategoriesTable() {
                     return (
                       <CategoriesTableCell
                         key={cell.id}
+                        align={align}
                         name={cell.column.columnDef.header as string}
                       >
                         {cell.renderValue() as ReactNode}

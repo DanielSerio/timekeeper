@@ -47,6 +47,7 @@ export function useTable<TData, TValue>({
   const [rowSelection, setRowSelection] = rowSelectionController;
   const selectionColumn: CustomColumnDef<TData, TValue> = {
     id: "select",
+    align: "center",
     header: "",
     size: 64,
     enableHiding: true,

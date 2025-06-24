@@ -7,16 +7,25 @@ export interface CategoriesTableCellProps
     PropsWithChildren<{}> {
   className?: string;
   name: string;
+  align?: "left" | "center" | "right" | null;
 }
 
 export function CategoriesTableCell({
   className,
   children,
+  align,
   name,
   ...props
 }: CategoriesTableCellProps) {
   return (
-    <Box className={classNames("table-cell", className)} {...props}>
+    <Box
+      className={classNames(
+        "table-cell",
+        align ? `align-${align}` : null,
+        className
+      )}
+      {...props}
+    >
       <Box className="label">{name}</Box>
       <Box className="value">{children}</Box>
     </Box>
