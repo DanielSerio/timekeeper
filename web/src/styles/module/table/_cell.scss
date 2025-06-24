@@ -1,0 +1,32 @@
+.table-cell {
+  display: flex;
+  justify-content: space-between;
+  max-height: 24px;
+
+  .label,
+  .value {
+    padding: 6px;
+  }
+}
+
+.cell-action {
+  &:disabled {
+    opacity: 1;
+    color: inherit;
+    background: transparent;
+    cursor: text;
+    user-select: all;
+  }
+
+  &:not(:disabled) {
+    &,
+    &:hover {
+      background: transparent;
+      color: var(--mantine-color-anchor);
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

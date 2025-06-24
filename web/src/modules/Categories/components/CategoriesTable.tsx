@@ -3,8 +3,9 @@ import { useCategories } from "#categories/hooks/useCategories";
 import { Table } from "#core/components/Table/Table";
 import { useTable } from "#core/hooks/useTable";
 import { isActionColumn } from "#core/utilities/table";
-import { Box, Button, Checkbox, Switch } from "@mantine/core";
+import { Box, Button, Checkbox, Flex, Switch } from "@mantine/core";
 import type { ReactNode } from "react";
+import { CategoriesTableCell } from "./CategoriesTableCell";
 
 export function CategoriesTable() {
   const categoriesQuery = useCategories();
@@ -24,13 +25,13 @@ export function CategoriesTable() {
 
   return (
     <>
-      <header>
+      <Flex className="table-toolbar" p="xs" align="center" justify="flex-end">
         <Switch
           label="Edit Mode"
           checked={isEditMode}
           onChange={(ev) => setIsEditMode(ev.target.checked)}
         />
-      </header>
+      </Flex>
       <Table name="category">
         <Table.TableHead gridTemplateColumns={gridTemplateColumns}>
           {table.getVisibleLeafColumns().map((col) => {
@@ -77,6 +78,8 @@ export function CategoriesTable() {
                       return (
                         <Box key={cell.id}>
                           <Button
+                            className="cell-action"
+                            size="compact-xs"
                             disabled={!isEditMode}
                             onClick={onActionClick}
                           >
@@ -87,7 +90,12 @@ export function CategoriesTable() {
                     }
 
                     return (
-                      <Box key={cell.id}>{cell.renderValue() as ReactNode}</Box>
+                      <CategoriesTableCell
+                        key={cell.id}
+                        name={cell.column.columnDef.header as string}
+                      >
+                        {cell.renderValue() as ReactNode}
+                      </CategoriesTableCell>
                     );
                   })}
                 </Table.TableRow>
