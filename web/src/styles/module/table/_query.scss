@@ -17,6 +17,8 @@
   }
 
   .table .table-cell {
+    border-right: none;
+
     &.align-center,
     &.align-right {
       width: 100%;

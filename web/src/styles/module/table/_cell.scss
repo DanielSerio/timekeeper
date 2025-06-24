@@ -2,13 +2,8 @@
 .header-cell {
   min-height: 24px;
 
-  &.align-center {
-    justify-content: center;
-
-    .label,
-    .value {
-      text-align: center;
-    }
+  &:not(:last-of-type) {
+    border-right: 1px solid var(--mantine-color-default-border);
   }
 }
 
@@ -31,6 +26,24 @@
   .label,
   .value {
     padding: 6px;
+  }
+
+  &.align-center {
+    justify-content: center;
+
+    .label,
+    .value {
+      text-align: center;
+    }
+  }
+
+  &.align-right {
+    justify-content: flex-end;
+
+    .label,
+    .value {
+      text-align: right;
+    }
   }
 }
 

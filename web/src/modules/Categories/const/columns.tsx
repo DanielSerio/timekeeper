@@ -28,6 +28,7 @@ export const CATEGORY_COLUMNS: CustomColumnDef<CategoryRecord>[] = [
     id: "createdAt",
     header: "Created",
     size: 192,
+    align: "right",
     accessorKey: "createdAt",
     accessorFn(row) {
       return format(row.createdAt, "yyyy/MM/dd");
@@ -37,6 +38,7 @@ export const CATEGORY_COLUMNS: CustomColumnDef<CategoryRecord>[] = [
     id: "lastUpdatedAt",
     header: "Updated",
     size: 192,
+    align: "right",
     accessorKey: "lastUpdatedAt",
     accessorFn(row) {
       const updateDate = row.lastUpdatedAt;
