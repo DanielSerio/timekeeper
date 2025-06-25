@@ -1,6 +1,6 @@
-import { TimesheetPage } from "#timesheets/pages/TimesheetPage";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import "#styles/output/timesheet.scss";
+import { TimesheetPage } from "#timesheets/pages/TimesheetPage";
+import { lazy } from "react";
 
 export const Route = createFileRoute("/timesheets/$id")({
   component: RouteComponent,
@@ -16,10 +16,18 @@ export const Route = createFileRoute("/timesheets/$id")({
   },
 });
 
+const TimesheetStyles = lazy(
+  () => import("#core/components/Lazy/LazyTimesheetStyles")
+);
+
 function RouteComponent() {
   const { id: idStr } = Route.useParams();
   // Will always be a number due to the redirect in the route loader
   const id = +idStr;
 
-  return <TimesheetPage id={id} />;
+  return (
+    <TimesheetStyles>
+      <TimesheetPage id={id} />
+    </TimesheetStyles>
+  );
 }
