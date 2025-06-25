@@ -1,4 +1,4 @@
-import { BreakdownChart } from "#core/components/charts/BreakdownChart";
+import { BreakdownChart } from "#breakdown/components/charts/BreakdownChart";
 import {} from "@mantine/charts";
 
 export function TimeByCategoryChart() {
