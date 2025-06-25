@@ -5,9 +5,5 @@ export function CardGrid({
   name,
   children,
 }: PropsWithChildren<{ name: string }>) {
-  return (
-    <Box component="section" className={`card-grid ${name}`}>
-      {children}
-    </Box>
-  );
+  return <Box className={`card-grid ${name}`}>{children}</Box>;
 }

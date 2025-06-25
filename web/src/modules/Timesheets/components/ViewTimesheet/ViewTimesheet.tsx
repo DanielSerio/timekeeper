@@ -5,6 +5,7 @@ import { useTimesheetContext } from "#timesheets/providers/timesheet/timesheet.p
 import { useQuery } from "@tanstack/react-query";
 import { ViewCategoryTimesheet } from "./ViewCategoryTimesheet/ViewCategoryTimesheet";
 import { ViewTimeTimesheet } from "./ViewTimeTimesheet/ViewTimeTimesheet";
+import { TimesheetHeader } from "../Timesheet/TimesheetHeader";
 
 async function simulateCategoriesGet() {
   return await new Promise<CategoryRecord[]>((resolve) => {
@@ -34,19 +35,25 @@ export function ViewTimesheet({
 
   if (viewMode === "By Category") {
     return (
-      <ViewCategoryTimesheet
-        isLoading={isLoading || categoriesQuery.isLoading}
-        timesheet={timesheetCtx}
-        categories={categoriesQuery.data}
-      />
+      <>
+        <TimesheetHeader />
+        <ViewCategoryTimesheet
+          isLoading={isLoading || categoriesQuery.isLoading}
+          timesheet={timesheetCtx}
+          categories={categoriesQuery.data}
+        />
+      </>
     );
   }
 
   return (
-    <ViewTimeTimesheet
-      isLoading={isLoading || categoriesQuery.isLoading}
-      timesheet={timesheetCtx}
-      categories={categoriesQuery.data}
-    />
+    <>
+      <TimesheetHeader />
+      <ViewTimeTimesheet
+        isLoading={isLoading || categoriesQuery.isLoading}
+        timesheet={timesheetCtx}
+        categories={categoriesQuery.data}
+      />
+    </>
   );
 }

@@ -2,7 +2,7 @@ import { Card, Text, type CardProps } from "@mantine/core";
 import type { ReactNode } from "react";
 
 export interface BreakdownCardProps extends CardProps {
-  title: string;
+  title: string | string[];
   renderActions: () => ReactNode;
 }
 
@@ -15,11 +15,19 @@ export function BreakdownCard({
   const hasActions = typeof renderActions === "function";
 
   return (
-    <Card {...props} withBorder>
+    <Card {...props} component="section" withBorder>
       <Card.Section withBorder p="xs">
-        <Text size="xl" component="h1">
-          {title}
-        </Text>
+        {typeof title === "string" ? (
+          <Text component="h1">{title}</Text>
+        ) : (
+          <>
+            {title.map((text, i) => (
+              <Text component={`h${i + 1}` as "h1"} key={text}>
+                {text}
+              </Text>
+            ))}
+          </>
+        )}
       </Card.Section>
       {!!children && (
         <Card.Section withBorder={hasActions} p="xs">
