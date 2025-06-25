@@ -1,5 +1,5 @@
 import { Checkbox, Group, SegmentedControl, Skeleton } from "@mantine/core";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState, type ChangeEvent } from "react";
 
 export const CHART_HEIGHT = 300;
 
@@ -100,6 +100,16 @@ export function BreakdownChart(props: BreakdownChartProps) {
     }
   });
 
+  const handleCheckboxChange = (ev: ChangeEvent<HTMLInputElement>) => {
+    const { checked } = ev.currentTarget;
+
+    if (checked) {
+      methods.changeChartVariant("stacked");
+    } else {
+      methods.changeChartVariant("grouped");
+    }
+  };
+
   return (
     <div className="chart-container breakdown">
       <Group mb="md">
@@ -113,7 +123,13 @@ export function BreakdownChart(props: BreakdownChartProps) {
             methods.changeChartType(val as "bar" | "radar");
           }}
         />
-        {state.chartConfig.type === "bar" && <Checkbox label="Stacked?" />}
+        {state.chartConfig.type === "bar" && (
+          <Checkbox
+            label="Stacked?"
+            checked={state.chartConfig.variant === "stacked"}
+            onChange={handleCheckboxChange}
+          />
+        )}
       </Group>
       <Suspense fallback={<Skeleton h={CHART_HEIGHT} w={"100%"} />}>
         <ChartComponent
