@@ -1,8 +1,14 @@
+import type { Interval } from "date-fns";
+import {
+  Flex,
+  Group,
+  Select,
+  TextInput,
+  type ComboboxItem,
+} from "@mantine/core";
+import { BreakdownCard } from "../../BreakdownCard";
 import { useCategoryTime } from "#breakdown/hooks/useCategoryTime";
 import type { CategoryTimeRangeKey } from "#breakdown/types";
-import type { Interval } from "date-fns";
-import { BreakdownCard } from "../../BreakdownCard";
-import { Group, Select, TextInput, type ComboboxItem } from "@mantine/core";
 import { TimeByCategoryChart } from "#breakdown/components/charts/TimeByCategoryChart";
 
 function getCardTitle(key: CategoryTimeRangeKey, customRange?: Interval) {
@@ -52,8 +58,9 @@ function CategoryTimeCardControls({
     date ? date.toISOString().split("T")[0] : "";
 
   return (
-    <Group>
+    <Group wrap="wrap">
       <Select
+        w="100%"
         required
         label="Range"
         data={options}
@@ -61,8 +68,9 @@ function CategoryTimeCardControls({
         onChange={onChange}
       />
       {value === "custom" && (
-        <>
+        <Flex gap="md" w="100%">
           <TextInput
+            flex={1}
             type="date"
             required
             max={getDateString(endDate)}
@@ -77,6 +85,7 @@ function CategoryTimeCardControls({
             }}
           />
           <TextInput
+            flex={1}
             type="date"
             required
             min={getDateString(startDate)}
@@ -90,7 +99,7 @@ function CategoryTimeCardControls({
               }
             }}
           />
-        </>
+        </Flex>
       )}
     </Group>
   );
