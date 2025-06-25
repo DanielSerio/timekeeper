@@ -2,7 +2,6 @@ import type {
   TimesheetLineRecord,
   TimesheetLineUpdate,
 } from "#core/types/models/timesheet-line.model-types";
-import { MOCK_CATEGORIES } from "#timesheets/hooks/useTimesheet";
 import type { TimesheetContextState } from "#timesheets/providers/timesheet/types";
 import { groupTimesheetLines } from "#timesheets/utilities/group-timesheet-lines";
 import { Box } from "@mantine/core";

@@ -9,7 +9,7 @@ import type {
 } from "#timesheets/providers/timesheet/types";
 import { canAddLine } from "#timesheets/utilities/can-add-line";
 import type { ComboboxItem } from "@mantine/core";
-import { isAfter, isSameDay, isSameMinute } from "date-fns";
+import { isAfter, isSameMinute } from "date-fns";
 import { useMemo, useState, type ChangeEvent } from "react";
 import { z } from "zod";
 

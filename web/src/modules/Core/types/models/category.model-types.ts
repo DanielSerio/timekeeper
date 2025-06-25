@@ -1,4 +1,4 @@
-import { Pretty } from "../utility";
+import type { Pretty } from "../utility";
 
 interface CategoryCreateBase {
   name: string;

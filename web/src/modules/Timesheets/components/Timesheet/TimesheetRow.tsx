@@ -12,7 +12,7 @@ import type {
   TimesheetLineUpdate,
 } from "#core/types/models/timesheet-line.model-types";
 import { TimesheetNoteCell } from "./cell/TimesheetNoteCell";
-import { differenceInMinutes, getMinutes } from "date-fns";
+import { differenceInMinutes } from "date-fns";
 
 function TimesheetRowComponent(
   {

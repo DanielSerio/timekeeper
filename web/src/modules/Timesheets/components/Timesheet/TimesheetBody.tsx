@@ -1,5 +1,5 @@
 import { useTimesheetContext } from "#timesheets/providers/timesheet/timesheet.provider";
-import { ActionIcon, Box, Button } from "@mantine/core";
+import { ActionIcon, Box } from "@mantine/core";
 import { forwardRef, useRef, type ForwardedRef } from "react";
 import { TimesheetRow } from "./TimesheetRow";
 import { useTimesheetNewLine } from "#timesheets/hooks/useTimesheetNewLine";

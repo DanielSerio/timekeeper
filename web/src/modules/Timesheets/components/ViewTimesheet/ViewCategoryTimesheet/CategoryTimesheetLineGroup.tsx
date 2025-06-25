@@ -1,5 +1,5 @@
 import type { CategoryRecord } from "#core/types/models/category.model-types";
-import { Badge, Box, Flex, Text } from "@mantine/core";
+import { Badge, Box, Flex } from "@mantine/core";
 import { CategoryTimesheetLine } from "./CategoryTimesheetLine";
 import type { PropsWithChildren } from "react";
 import { TimeDisplayCell } from "#timesheets/components/Timesheet/cell/TimeDisplayCell";

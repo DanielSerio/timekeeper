@@ -1,6 +1,6 @@
 import { TextInput } from "@mantine/core";
 import { TimesheetCell } from "./TimesheetCell";
-import type { ChangeEvent, KeyboardEvent } from "react";
+import type { ChangeEvent } from "react";
 
 export function TimesheetEndTimeCell({
   endTime,

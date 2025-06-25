@@ -3,7 +3,7 @@ import {
   groupTimesheetLines,
   type TimeGroupedTimesheet,
 } from "#timesheets/utilities/group-timesheet-lines";
-import { Badge, Box, Text } from "@mantine/core";
+import { Badge, Box } from "@mantine/core";
 import { TimeTimesheetLine } from "./TimeTimesheetLine";
 import { Fragment } from "react/jsx-runtime";
 import type { CategoryRecord } from "#core/types/models/category.model-types";
