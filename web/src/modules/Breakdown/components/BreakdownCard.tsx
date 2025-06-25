@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 export interface BreakdownCardProps extends CardProps {
   title: string | string[];
-  renderActions: () => ReactNode;
+  renderActions?: () => ReactNode;
 }
 
 export function BreakdownCard({

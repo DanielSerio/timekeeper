@@ -1,25 +1,16 @@
 import { CardGrid } from "#breakdown/components/CardGrid";
 import { CategoryTimeCard } from "#breakdown/components/cards/CategoryTimeCard/CategoryTimeCard";
+import { RecentTimesheetsCard } from "#breakdown/components/cards/RecentTimesheetsCard/RecentTimesheetsCard";
+import { TimesheetStatsCard } from "#breakdown/components/cards/TimesheetStatsCard/TimesheetStatsCard";
 import { Page } from "#core/components/Page";
-import { BreakdownCard } from "../components/BreakdownCard";
 
 export function BreakdownPage() {
   return (
     <Page>
       <CardGrid name="breakdown-cards">
         <CategoryTimeCard />
-        <BreakdownCard
-          title="Test Card"
-          renderActions={() => <span>Actions</span>}
-        >
-          <p>Some Content</p>
-        </BreakdownCard>
-        <BreakdownCard
-          title="Test Card"
-          renderActions={() => <span>Actions</span>}
-        >
-          <p>Some Content</p>
-        </BreakdownCard>
+        <TimesheetStatsCard />
+        <RecentTimesheetsCard />
       </CardGrid>
     </Page>
   );

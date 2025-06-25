@@ -14,7 +14,7 @@
   .card-grid {
     &.breakdown-cards {
       grid-template-columns: 1fr 280px;
-      grid-template-rows: 1fr 1fr;
+      grid-template-rows: auto 1fr;
 
       .mantine-Card-root {
         grid-column: 2;
@@ -23,6 +23,7 @@
       .mantine-Card-root:first-of-type {
         grid-column: 1;
         grid-row: span 2;
+        align-self: start;
       }
     }
   }
