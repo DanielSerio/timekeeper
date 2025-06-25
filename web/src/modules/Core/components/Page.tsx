@@ -1,5 +1,5 @@
-import { classNames } from "#core/utilities/attribute";
 import { AppShellMain, type AppShellMainProps } from "@mantine/core";
+import { classNames } from "#core/utilities/attribute";
 
 export interface PageProps extends AppShellMainProps {}
 

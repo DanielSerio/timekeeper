@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Flex, Group, Menu, Text } from "@mantine/core";
+import { ActionIcon, Flex, Group, Menu, Text } from "@mantine/core";
 import { Link } from "@tanstack/react-router";
 import { NAVIGATION_LINKS, type NavigationLink } from "#core/const";
 import { classNames } from "#core/utilities/attribute";

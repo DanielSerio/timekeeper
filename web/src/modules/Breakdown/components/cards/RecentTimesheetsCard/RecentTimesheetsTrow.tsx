@@ -11,7 +11,9 @@ export function RecentTimesheetsTrow({ timesheet }: RecentTimesheetsTrowProps) {
   return (
     <Table.Tr className="recent-timesheets">
       <Table.Td>
-        <Anchor href={url}>{timesheet.name}</Anchor>
+        <Anchor href={url} lineClamp={1} maw="15ch" title={timesheet.name}>
+          {timesheet.name}
+        </Anchor>
       </Table.Td>
       <Table.Td>
         <Anchor href={url}>{timesheet.date.toLocaleDateString()}</Anchor>
