@@ -3,6 +3,7 @@ import type { CategoryTimeRangeKey } from "#breakdown/types";
 import type { Interval } from "date-fns";
 import { BreakdownCard } from "../../BreakdownCard";
 import { Group, Select, TextInput, type ComboboxItem } from "@mantine/core";
+import { TimeByCategoryChart } from "#breakdown/components/charts/TimeByCategoryChart";
 
 function getCardTitle(key: CategoryTimeRangeKey, customRange?: Interval) {
   switch (key) {
@@ -125,7 +126,7 @@ export function CategoryTimeCard() {
         />
       )}
     >
-      <p>{JSON.stringify(dateInterval)}</p>
+      <TimeByCategoryChart />
     </BreakdownCard>
   );
 }
