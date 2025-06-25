@@ -12,25 +12,36 @@
 // medium screens
 @media screen and (min-width: 660px) {
   .card-grid {
-    &.test-cards {
-      grid-template-columns: 1fr 1fr;
+    &.breakdown-cards {
+      grid-template-columns: 1fr 280px;
+      grid-template-rows: 1fr 1fr;
 
-      .mantine-Card-root:last-of-type {
-        grid-column: span 2;
+      .mantine-Card-root {
+        grid-column: 2;
+      }
+
+      .mantine-Card-root:first-of-type {
+        grid-column: 1;
+        grid-row: span 2;
       }
     }
   }
 }
 
 // large screens
-@media screen and (min-width: 880px) {
+@media screen and (min-width: 960px) {
   .card-grid {
-    &.test-cards {
-      grid-template-columns: 1fr 1fr 1fr;
+    &.breakdown-cards {
+      grid-template-columns: 1fr 360px;
+    }
+  }
+}
 
-      .mantine-Card-root:last-of-type {
-        grid-column: auto;
-      }
+// x-large screens
+@media screen and (min-width: 1080px) {
+  .card-grid {
+    &.breakdown-cards {
+      grid-template-columns: 1fr 480px;
     }
   }
 }

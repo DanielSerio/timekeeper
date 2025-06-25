@@ -6,7 +6,7 @@ import { BreakdownCard } from "../components/BreakdownCard";
 export function BreakdownPage() {
   return (
     <Page>
-      <CardGrid name="test-cards">
+      <CardGrid name="breakdown-cards">
         <CategoryTimeCard />
         <BreakdownCard
           title="Test Card"
