@@ -20,6 +20,7 @@ import { classNames } from "#core/utilities/attribute";
 import { useCategoryListModal } from "#categories/hooks/useCategoryListModal";
 import type { CategoryRecord } from "#core/types/models/category.model-types";
 import { TbPlus } from "react-icons/tb";
+import { CategoryForm } from "./CategoryModal/CategoryForm";
 
 export function CategoriesTable() {
   const categoriesQuery = useCategories();
@@ -200,10 +201,14 @@ export function CategoriesTable() {
         </Table.TableBody>
       </Table>
       <Modal
+        title={modalState?.category ? "Edit Category" : "Create Category"}
         opened={modalState !== null}
         onClose={() => modalMethods.dismiss()}
       >
-        <p>{JSON.stringify(modalState, null, 2)}</p>
+        <CategoryForm
+          category={modalState?.category}
+          dismiss={() => modalMethods.dismiss()}
+        />
       </Modal>
     </>
   );
