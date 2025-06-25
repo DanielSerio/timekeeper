@@ -30,7 +30,7 @@ export function BreakdownCard({
         )}
       </Card.Section>
       {!!children && (
-        <Card.Section withBorder={hasActions} p="xs">
+        <Card.Section withBorder={hasActions} p="xs" flex={1}>
           {children}
         </Card.Section>
       )}
