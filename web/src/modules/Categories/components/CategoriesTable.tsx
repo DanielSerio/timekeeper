@@ -16,7 +16,7 @@ import { CategoriesTableCell } from "./CategoriesTableCell";
 import { getColumnAlign } from "#core/utilities/table/get-column-align";
 import { classNames } from "#core/utilities/attribute";
 
-import { TbPlus } from "react-icons/tb";
+import { TbPlus, TbTrash } from "react-icons/tb";
 import { CategoryForm } from "./CategoryModal/CategoryForm";
 import { useCategoriesTable } from "#categories/hooks/useCategoriesTable";
 
@@ -36,13 +36,13 @@ export function CategoriesTable() {
       onChangeSelectionStateForAll,
       onCreateClick,
       onActionClick,
+      onDeleteClick,
       setIsEditMode,
       setRowSelection,
       modalMethods,
     },
   ] = useCategoriesTable();
-  console.info("Rendering CategoriesTable");
-  console.log("rowSelection", rowSelection);
+
   return (
     <>
       <Flex className="table-toolbar" p="xs" align="center" justify="flex-end">
@@ -59,12 +59,34 @@ export function CategoriesTable() {
                   onChangeSelectionStateForAll(ev.currentTarget.checked)
                 }
               />
-              <Button onClick={onCreateClick} size="xs">
-                <Group gap={4}>
-                  <Text>Create Category</Text>
-                  <TbPlus />
-                </Group>
-              </Button>
+              <Group>
+                <Button
+                  color="red"
+                  onClick={onDeleteClick}
+                  disabled={noneSelected}
+                  size="xs"
+                  title={"Remove Categories"}
+                >
+                  <Group gap={4}>
+                    <Text visibleFrom="sm" size="xs">
+                      Remove Categories
+                    </Text>
+                    <TbTrash />
+                  </Group>
+                </Button>
+                <Button
+                  onClick={onCreateClick}
+                  size="xs"
+                  title={"Create Category"}
+                >
+                  <Group gap={4}>
+                    <Text visibleFrom="sm" size="xs">
+                      Create Category
+                    </Text>
+                    <TbPlus />
+                  </Group>
+                </Button>
+              </Group>
             </>
           )}
           <Switch
