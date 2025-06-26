@@ -1,7 +1,5 @@
 import { CATEGORY_COLUMNS } from "#categories/const";
-import { useCategories } from "#categories/hooks/useCategories";
 import { Table } from "#core/components/Table/Table";
-import { useTable } from "#core/hooks/useTable";
 import { isActionColumn } from "#core/utilities/table";
 import {
   Box,
@@ -17,46 +15,34 @@ import type { ReactNode } from "react";
 import { CategoriesTableCell } from "./CategoriesTableCell";
 import { getColumnAlign } from "#core/utilities/table/get-column-align";
 import { classNames } from "#core/utilities/attribute";
-import { useCategoryListModal } from "#categories/hooks/useCategoryListModal";
-import type { CategoryRecord } from "#core/types/models/category.model-types";
+
 import { TbPlus } from "react-icons/tb";
 import { CategoryForm } from "./CategoryModal/CategoryForm";
+import { useCategoriesTable } from "#categories/hooks/useCategoriesTable";
 
 export function CategoriesTable() {
-  const categoriesQuery = useCategories();
-  const [modalState, modalMethods] = useCategoryListModal();
-  const {
-    gridTemplateColumns,
-    rowSelectionController: [rowSelection, setRowSelection],
-    editModeController: [isEditMode, setIsEditMode],
-    table,
-  } = useTable({
-    columns: CATEGORY_COLUMNS,
-    query: categoriesQuery,
-  });
-  const count = table.getRowModel().rows.length;
-
-  const onChangeSelectionStateForAll = (value: boolean) =>
-    setRowSelection(() => {
-      const newSelection: Record<number, boolean> = {};
-
-      for (let i = 0; i < count; i++) {
-        newSelection[i] = value;
-      }
-
-      return newSelection;
-    });
-
-  const selectedRows = Object.entries(rowSelection).filter(([_, v]) => v);
-  const allSelected = selectedRows.length === count;
-  const noneSelected = selectedRows.length === 0;
-
-  const onCreateClick = () => modalMethods.open();
-  const onActionClick = (category: CategoryRecord) =>
-    modalMethods.open({
-      category,
-    });
-
+  const [
+    {
+      isEditMode,
+      allRowsSelected: allSelected,
+      noRowsSelected: noneSelected,
+      gridTemplateColumns,
+      table,
+      categoriesQuery,
+      rowSelection,
+      modalState,
+    },
+    {
+      onChangeSelectionStateForAll,
+      onCreateClick,
+      onActionClick,
+      setIsEditMode,
+      setRowSelection,
+      modalMethods,
+    },
+  ] = useCategoriesTable();
+  console.info("Rendering CategoriesTable");
+  console.log("rowSelection", rowSelection);
   return (
     <>
       <Flex className="table-toolbar" p="xs" align="center" justify="flex-end">
@@ -156,8 +142,7 @@ export function CategoriesTable() {
                               setRowSelection((current) => {
                                 return {
                                   ...current,
-                                  [row.index]:
-                                    ev.currentTarget?.checked ?? false,
+                                  [row.index]: ev.target.checked,
                                 };
                               })
                             }
