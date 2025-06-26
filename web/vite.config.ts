@@ -16,6 +16,10 @@ export default defineConfig({
   ],
   server: {
     host: true,
+    watch: {
+      usePolling: true, // Enable polling for file changes
+      interval: 1000,
+    },
   },
   resolve: {
     alias: {
