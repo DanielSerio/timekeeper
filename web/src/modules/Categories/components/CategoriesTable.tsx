@@ -19,6 +19,7 @@ import { classNames } from "#core/utilities/attribute";
 import { TbPlus, TbTrash } from "react-icons/tb";
 import { CategoryForm } from "./CategoryModal/CategoryForm";
 import { useCategoriesTable } from "#categories/hooks/useCategoriesTable";
+import { Pagination } from "#core/components/Pagination/Pagination";
 
 export function CategoriesTable() {
   const [
@@ -45,7 +46,15 @@ export function CategoriesTable() {
 
   return (
     <>
-      <Flex className="table-toolbar" p="xs" align="center" justify="flex-end">
+      <Flex
+        className="table-toolbar"
+        p="xs"
+        align="center"
+        justify="space-between"
+      >
+        <Group>
+          <Pagination />
+        </Group>
         <Group>
           {isEditMode && (
             <>
@@ -140,6 +149,13 @@ export function CategoriesTable() {
               ))}
             </>
           )}
+          {!categoriesQuery.isLoading &&
+            categoriesQuery.data?.records?.length === 0 && (
+              <Table.Message
+                gridTemplateColumns={gridTemplateColumns}
+                message="No records found"
+              />
+            )}
           {!categoriesQuery.isLoading &&
             !!categoriesQuery.data &&
             table.getRowModel().flatRows.map((row) => {

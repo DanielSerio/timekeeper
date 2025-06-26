@@ -17,6 +17,7 @@ import { isActionColumn } from "#core/utilities/table";
 import { TimesheetsTableCell } from "./TimesheetsTableCell";
 import type { ReactNode } from "react";
 import { useTimesheetsTable } from "#timesheets/hooks/useTimesheetsTable";
+import { Pagination } from "#core/components/Pagination/Pagination";
 
 export function TimesheetsTable() {
   const [
@@ -44,7 +45,15 @@ export function TimesheetsTable() {
 
   return (
     <>
-      <Flex className="table-toolbar" p="xs" align="center" justify="flex-end">
+      <Flex
+        className="table-toolbar"
+        p="xs"
+        align="center"
+        justify="space-between"
+      >
+        <Group>
+          <Pagination />
+        </Group>
         <Group>
           {isEditMode && (
             <>
