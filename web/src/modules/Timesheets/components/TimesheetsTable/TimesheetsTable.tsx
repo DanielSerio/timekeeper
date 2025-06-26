@@ -8,62 +8,39 @@ import {
   Switch,
   Text,
 } from "@mantine/core";
-import { TbPlus } from "react-icons/tb";
+import { TbPlus, TbTrash } from "react-icons/tb";
 import { Table } from "#core/components/Table/Table";
-import { useTimesheets } from "#timesheets/hooks/useTimesheets";
-import { useTimesheetListModal } from "#timesheets/hooks/useTimesheetListModal";
-import { useTable } from "#core/hooks/useTable";
 import { TIMESHEET_COLUMNS } from "#timesheets/const";
-import type { TimesheetRecord } from "#core/types/models/timesheet.model-types";
 import { getColumnAlign } from "#core/utilities/table/get-column-align";
 import { classNames } from "#core/utilities/attribute";
 import { isActionColumn } from "#core/utilities/table";
 import { TimesheetsTableCell } from "./TimesheetsTableCell";
 import type { ReactNode } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { useTimesheetsTable } from "#timesheets/hooks/useTimesheetsTable";
 
 export function TimesheetsTable() {
-  const navigate = useNavigate();
-  const timesheetsQuery = useTimesheets();
-  const [modalState, modalMethods] = useTimesheetListModal();
-  const {
-    gridTemplateColumns,
-    rowSelectionController: [rowSelection, setRowSelection],
-    editModeController: [isEditMode, setIsEditMode],
-    table,
-  } = useTable({
-    columns: TIMESHEET_COLUMNS,
-    query: timesheetsQuery,
-  });
-  const count = table.getRowModel().rows.length;
-
-  const onChangeSelectionStateForAll = (value: boolean) =>
-    setRowSelection(() => {
-      const newSelection: Record<number, boolean> = {};
-
-      for (let i = 0; i < count; i++) {
-        newSelection[i] = value;
-      }
-
-      return newSelection;
-    });
-
-  const selectedRows = Object.entries(rowSelection).filter(([_, v]) => v);
-  const allSelected = selectedRows.length === count;
-  const noneSelected = selectedRows.length === 0;
-
-  const onCreateClick = () => modalMethods.open();
-  const onActionClick = (timesheet: TimesheetRecord) =>
-    navigate({
-      to: `/timesheets/${timesheet.id}`,
-      search: { mode: "edit" }, //TODO: this should determine the default mode on the timesheet page
-    });
-
-  const onViewActionClick = (timesheet: TimesheetRecord) =>
-    navigate({
-      to: `/timesheets/${timesheet.id}`,
-      search: { mode: "view" }, //TODO: this should determine the default mode on the timesheet page
-    });
+  const [
+    {
+      timesheetsQuery,
+      gridTemplateColumns,
+      table,
+      rowSelection,
+      isEditMode,
+      modalState,
+      allRowsSelected: allSelected,
+      noRowsSelected: noneSelected,
+    },
+    {
+      setIsEditMode,
+      setRowSelection,
+      onCreateClick,
+      onActionClick,
+      onViewActionClick,
+      onDeleteClick,
+      onChangeSelectionStateForAll,
+      modalMethods,
+    },
+  ] = useTimesheetsTable();
 
   return (
     <>
@@ -81,9 +58,29 @@ export function TimesheetsTable() {
                   onChangeSelectionStateForAll(ev.currentTarget.checked)
                 }
               />
-              <Button onClick={onCreateClick} size="xs">
+              <Button
+                color="red"
+                onClick={onDeleteClick}
+                disabled={noneSelected}
+                size="xs"
+                title={"Remove Timesheets"}
+              >
                 <Group gap={4}>
-                  <Text>Create Timesheet</Text>
+                  <Text visibleFrom="sm" size="xs">
+                    Remove Timesheets
+                  </Text>
+                  <TbTrash />
+                </Group>
+              </Button>
+              <Button
+                onClick={onCreateClick}
+                size="xs"
+                title="Create Timesheet"
+              >
+                <Group gap={4}>
+                  <Text size="xs" visibleFrom="sm">
+                    Create Timesheet
+                  </Text>
                   <TbPlus />
                 </Group>
               </Button>
@@ -164,8 +161,7 @@ export function TimesheetsTable() {
                               setRowSelection((current) => {
                                 return {
                                   ...current,
-                                  [row.index]:
-                                    ev.currentTarget?.checked ?? false,
+                                  [row.index]: ev.target.checked,
                                 };
                               })
                             }
@@ -217,7 +213,7 @@ export function TimesheetsTable() {
         opened={modalState !== null}
         onClose={() => modalMethods.dismiss()}
       >
-        <p>Modal</p>
+        <p>Create Modal</p>
       </Modal>
     </>
   );
