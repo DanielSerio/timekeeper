@@ -127,6 +127,16 @@ export function TimesheetsTable() {
           })}
         </Table.TableHead>
         <Table.TableBody>
+          {timesheetsQuery.isLoading && (
+            <>
+              {[...new Array(5)].map((_, i) => (
+                <Table.SkeletonRow
+                  key={`i:${i}`}
+                  gridTemplateColumns={gridTemplateColumns}
+                />
+              ))}
+            </>
+          )}
           {!timesheetsQuery.isLoading &&
             !!timesheetsQuery.data &&
             table.getRowModel().flatRows.map((row) => {

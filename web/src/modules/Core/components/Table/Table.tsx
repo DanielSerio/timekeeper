@@ -5,6 +5,7 @@ import { TableToolbar } from "./TableToolbar";
 import { classNames } from "#core/utilities/attribute";
 import type { PropsWithChildren } from "react";
 import { TableRow } from "./TableRow";
+import { TableSkeletonRow } from "./TableSkeletonRow";
 
 const TableComponent = ({
   name,
@@ -22,5 +23,6 @@ TableComponent.TableBody = TableBody;
 TableComponent.TableRow = TableRow;
 TableComponent.Toolbar = TableToolbar;
 TableComponent.Footer = TableFooter;
+TableComponent.SkeletonRow = TableSkeletonRow;
 
 export const Table = TableComponent;

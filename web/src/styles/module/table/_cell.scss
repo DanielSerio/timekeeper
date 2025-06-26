@@ -47,6 +47,10 @@
   }
 }
 
+.table-row.skeleton .table-cell .value {
+  flex: 1;
+}
+
 .checkbox-cell {
   text-align: center;
   justify-content: center;

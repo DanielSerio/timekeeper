@@ -130,6 +130,16 @@ export function CategoriesTable() {
           })}
         </Table.TableHead>
         <Table.TableBody>
+          {categoriesQuery.isLoading && (
+            <>
+              {[...new Array(5)].map((_, i) => (
+                <Table.SkeletonRow
+                  key={`i:${i}`}
+                  gridTemplateColumns={gridTemplateColumns}
+                />
+              ))}
+            </>
+          )}
           {!categoriesQuery.isLoading &&
             !!categoriesQuery.data &&
             table.getRowModel().flatRows.map((row) => {
