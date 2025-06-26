@@ -25,7 +25,11 @@ function useDeleteMutation(
 }
 
 export function useCategoriesTable() {
-  const categoriesQuery = useCategories();
+  const {
+    query: categoriesQuery,
+    pagingController: [paging],
+    count: totalRecords,
+  } = useCategories();
   const [modalState, modalMethods] = useCategoryListModal();
   const {
     gridTemplateColumns,
@@ -73,6 +77,8 @@ export function useCategoriesTable() {
     table,
     categoriesQuery,
     rowSelection,
+    paging,
+    totalRecords,
   };
   const methods = {
     onChangeSelectionStateForAll,

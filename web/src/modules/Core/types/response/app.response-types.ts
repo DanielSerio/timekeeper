@@ -11,7 +11,7 @@ interface PagingBasis {
 
 interface PagingTotals {
   pages: number;
-  record: number;
+  records: number;
 }
 
 export interface PagingRequest extends PagingBasis {

@@ -32,6 +32,8 @@ export function CategoriesTable() {
       categoriesQuery,
       rowSelection,
       modalState,
+      paging,
+      totalRecords,
     },
     {
       onChangeSelectionStateForAll,
@@ -53,7 +55,16 @@ export function CategoriesTable() {
         justify="space-between"
       >
         <Group>
-          <Pagination />
+          <Pagination
+            totalRecords={totalRecords}
+            limit={paging.limit}
+            offset={paging.offset}
+            onChangeRecordsPerPage={() => {}}
+            onGoToFirst={() => {}}
+            onGoToLast={() => {}}
+            onGoToNext={() => {}}
+            onGoToPrev={() => {}}
+          />
         </Group>
         <Group>
           {isEditMode && (
