@@ -1,3 +1,4 @@
+import { DeleteResult } from "typeorm";
 import { TIMESHEET_LIST_SCHEMA } from "./list-schema.docs";
 import { EXTENDED_TIMESHEET_RECORD_SCHEMA } from "./record-schema.docs";
 import { TIMESHEET_EXAMPLES } from "./timesheet-examples";
@@ -27,6 +28,29 @@ export const DELETE_ONE_RESPONSE = {
     properties: {
       status: {
         type: 'number'
+      }
+    }
+  },
+  examples: TIMESHEET_EXAMPLES
+};
+
+/**
+ {
+    deleteTimesheetsResult: DeleteResult;
+    deleteLinesResult: DeleteResult | undefined;
+  }
+ */
+export const DELETE_MANY_RESPONSE = {
+  description: 'Deletes many timesheets',
+  schema: {
+    type: 'object',
+    properties: {
+      deleteTimesheetsResult: {
+        type: DeleteResult
+      },
+      deleteLinesResult: {
+        type: DeleteResult,
+        optional: true
       }
     }
   },

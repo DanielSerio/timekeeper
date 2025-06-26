@@ -1,15 +1,19 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { Filter, FindManyOptions, FindOptionsOrder, FindOptionsWhere, Repository, Sort, SortDirection } from 'typeorm';
+import { DataSource, Filter, FindManyOptions, FindOptionsOrder, Repository, } from 'typeorm';
 import { Category } from './entities/category.entity';
 import { RequestHelpers } from '#shared/utilities/request.helpers';
 import { ListSorting } from '#shared/types/request/list.request-types';
 
 @Injectable()
 export class CategoriesService {
+  private get repo(): Repository<Category> {
+    return this.source.getRepository(Category);
+  }
+
   constructor(
-    private repo: Repository<Category>
+    private source: DataSource
   ) { }
 
   async create(createCategoryDto: CreateCategoryDto) {

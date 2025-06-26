@@ -1,12 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException, Req } from '@nestjs/common';
 import { TimesheetsService } from './timesheets.service';
 import { CreateTimesheetDto } from './dto/create-timesheet.dto';
 import { UpdateTimesheetDto } from './dto/update-timesheet.dto';
 import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
-import { CREATED_RESPONSE, GET_MANY_RESPONSE, GET_ONE_RESPONSE, UPDATED_RESPONSE } from './docs/response.docs';
+import { CREATED_RESPONSE, DELETE_MANY_RESPONSE, GET_MANY_RESPONSE, GET_ONE_RESPONSE, UPDATED_RESPONSE } from './docs/response.docs';
 import { CREATE_BODY_SCHEMA, UPDATE_BODY_SCHEMA } from './docs/record-schema.docs';
 import { z } from 'zod';
 import { TimesheetValidator } from './validators/timesheet.validator';
+import { Request } from 'express';
+import { RequestHelpers } from '#shared/utilities/request.helpers';
+import { Timesheet } from './entities/timesheet.entity';
 
 @Controller('timesheets')
 export class TimesheetsController {
@@ -86,10 +89,22 @@ export class TimesheetsController {
   })
   @ApiOkResponse(GET_MANY_RESPONSE)
   @Get()
-  findAll() {
-    return this.timesheetsService.findAllTimesheets();
+  findAll(@Req() req: Request) {
+    const url = `${req.url}`;
+    const params = RequestHelpers.getListRequestParams<Timesheet>(url);
+
+    return this.timesheetsService.findAllTimesheets(params);
   }
 
+  @ApiBody({
+    schema: {
+      type: 'array',
+      items: {
+        type: 'number'
+      }
+    }
+  })
+  @ApiOkResponse(DELETE_MANY_RESPONSE)
   @Patch('delete')
   async deleteMany(@Body() ids: number[]) {
     const parsed = this.validateIds(ids);
