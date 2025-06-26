@@ -1,6 +1,6 @@
 import { CategoryRecord } from "#shared/types/models/category.model-types";
 import { TimesheetLine } from "src/timesheets/entities/timesheet-line.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Category implements CategoryRecord {
@@ -23,6 +23,6 @@ export class Category implements CategoryRecord {
   })
   name: string;
 
-  @ManyToOne(() => TimesheetLine, (line) => line.category)
-  line?: TimesheetLine[];
+  @OneToMany(() => TimesheetLine, (line) => line.category)
+  lines?: TimesheetLine[];
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException, Req } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -7,6 +7,9 @@ import { CategoryCreate, CategoryUpdate } from '#shared/types/models/category.mo
 import { z } from 'zod';
 import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { CREATED_RESPONSE, DELETE_ONE_RESPONSE, GET_MANY_RESPONSE, GET_ONE_RESPONSE } from './docs/response.docs';
+import { RequestHelpers } from '#shared/utilities/request.helpers';
+import { Category } from './entities/category.entity';
+import { Request } from 'express';
 
 
 @Controller('categories')
@@ -86,8 +89,11 @@ export class CategoriesController {
   })
   @ApiOkResponse(GET_MANY_RESPONSE)
   @Get()
-  findAll() {
-    return this.categoriesService.findAll();
+  findAll(@Req() req: Request) {
+    const url = `${req.url}`;
+    const requestParams = RequestHelpers.getListRequestParams<Category>(url);
+
+    return this.categoriesService.findAll(requestParams);
   }
 
   @ApiOkResponse({
