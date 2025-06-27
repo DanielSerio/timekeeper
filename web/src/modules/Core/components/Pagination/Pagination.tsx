@@ -53,6 +53,9 @@ export function Pagination({
     goToLast,
   },
 }: PaginationProps) {
+  const currentPage = ~~(offset / limit) + 1;
+  const totalPages = Math.ceil(totalRecords / limit) || 1;
+
   return (
     <Popover>
       <Popover.Target>
@@ -74,21 +77,37 @@ export function Pagination({
           }}
         />
         <Group gap="xs" w="fit-content" mx="auto">
-          <PaginationButton title="Go to first page" onClick={goToFirst}>
+          <PaginationButton
+            title="Go to first page"
+            disabled={currentPage === 1}
+            onClick={goToFirst}
+          >
             <TbChevronsLeft />
           </PaginationButton>
-          <PaginationButton title="Go to previous page" onClick={goToPrev}>
+          <PaginationButton
+            title="Go to previous page"
+            disabled={currentPage === 1}
+            onClick={goToPrev}
+          >
             <TbChevronLeft />
           </PaginationButton>
 
           <Text>
-            {Math.ceil(offset / limit)}/{Math.ceil(totalRecords / limit)}
+            {currentPage}/{totalPages}
           </Text>
 
-          <PaginationButton title="Go to next page" onClick={goToNext}>
+          <PaginationButton
+            title="Go to next page"
+            disabled={currentPage === totalPages}
+            onClick={goToNext}
+          >
             <TbChevronRight />
           </PaginationButton>
-          <PaginationButton title="Go to last page" onClick={goToLast}>
+          <PaginationButton
+            title="Go to last page"
+            disabled={currentPage === totalPages}
+            onClick={goToLast}
+          >
             <TbChevronsRight />
           </PaginationButton>
         </Group>

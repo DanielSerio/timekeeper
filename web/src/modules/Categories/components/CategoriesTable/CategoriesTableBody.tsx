@@ -1,24 +1,35 @@
+import type { ReactNode } from "react";
+import { Box, Button, Checkbox } from "@mantine/core";
 import { CATEGORY_COLUMNS } from "#categories/const";
 import { useCategoriesTable } from "#categories/hooks/useCategoriesTable";
 import { Table } from "#core/components/Table/Table";
 import { classNames } from "#core/utilities/attribute";
 import { isActionColumn } from "#core/utilities/table";
 import { getColumnAlign } from "#core/utilities/table/get-column-align";
-import { Box, Button, Checkbox } from "@mantine/core";
 import { CategoriesTableCell } from "./CategoriesTableCell";
-import type { ReactNode } from "react";
 
 export function CategoriesTableBody() {
   const [
-    { isEditMode, gridTemplateColumns, table, categoriesQuery, rowSelection },
+    {
+      isEditMode,
+      gridTemplateColumns,
+      table,
+      categoriesQuery,
+      rowSelection,
+      paging,
+    },
     { onActionClick, setRowSelection },
   ] = useCategoriesTable();
+
+  const skeletonRowMax = 5;
+  const skeletonRowCount =
+    paging.limit >= skeletonRowMax ? skeletonRowMax : paging.limit;
 
   return (
     <Table.TableBody>
       {categoriesQuery.isLoading && (
         <>
-          {[...new Array(5)].map((_, i) => (
+          {[...new Array(skeletonRowCount)].map((_, i) => (
             <Table.SkeletonRow
               key={`i:${i}`}
               gridTemplateColumns={gridTemplateColumns}

@@ -12,6 +12,7 @@ export function CategoriesTableHead() {
       noRowsSelected: noneSelected,
       gridTemplateColumns,
       table,
+      totalRecords,
     },
     { onChangeSelectionStateForAll },
   ] = useCategoriesTable();
@@ -32,7 +33,7 @@ export function CategoriesTableHead() {
             <Box className={classes} key={col.id}>
               <Checkbox
                 size="xs"
-                checked={allSelected}
+                checked={allSelected && totalRecords > 0}
                 indeterminate={!allSelected && !noneSelected}
                 onChange={(ev) =>
                   onChangeSelectionStateForAll(ev.currentTarget.checked)
