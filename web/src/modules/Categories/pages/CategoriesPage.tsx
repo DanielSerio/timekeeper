@@ -1,4 +1,4 @@
-import { CategoriesTable } from "#categories/components/CategoriesTable";
+import { CategoriesTable } from "#categories/components/CategoriesTable/CategoriesTable";
 import { Page } from "#core/components/Page";
 
 export function CategoriesPage() {

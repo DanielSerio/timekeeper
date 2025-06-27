@@ -18,7 +18,9 @@ import {
 function PaginationButton({
   children,
   ...props
-}: PropsWithChildren<ActionIconProps & { title: string }>) {
+}: PropsWithChildren<
+  ActionIconProps & { title: string; onClick?: () => void }
+>) {
   return (
     <ActionIcon variant="light" color="gray" {...props}>
       {children}
@@ -30,18 +32,26 @@ export interface PaginationProps {
   totalRecords: number;
   limit: number;
   offset: number;
-  onChangeRecordsPerPage: (newRecordsPerPage: number) => void;
-  onGoToFirst: () => void;
-  onGoToPrev: () => void;
-  onGoToNext: () => void;
-  onGoToLast: () => void;
+  pagingMethods: {
+    goToFirst: () => void;
+    goToLast: () => void;
+    goToNext: () => void;
+    goToPrev: () => void;
+    changeRecordsPerPage: (perPage: number) => void;
+  };
 }
 
 export function Pagination({
   totalRecords,
   limit,
   offset,
-  onChangeRecordsPerPage,
+  pagingMethods: {
+    changeRecordsPerPage,
+    goToFirst,
+    goToPrev,
+    goToNext,
+    goToLast,
+  },
 }: PaginationProps) {
   return (
     <Popover>
@@ -59,15 +69,15 @@ export function Pagination({
           value={limit.toString()}
           onChange={(value) => {
             if (value !== null) {
-              onChangeRecordsPerPage(+value);
+              changeRecordsPerPage(+value);
             }
           }}
         />
         <Group gap="xs" w="fit-content" mx="auto">
-          <PaginationButton title="Go to first page">
+          <PaginationButton title="Go to first page" onClick={goToFirst}>
             <TbChevronsLeft />
           </PaginationButton>
-          <PaginationButton title="Go to previous page">
+          <PaginationButton title="Go to previous page" onClick={goToPrev}>
             <TbChevronLeft />
           </PaginationButton>
 
@@ -75,10 +85,10 @@ export function Pagination({
             {Math.ceil(offset / limit)}/{Math.ceil(totalRecords / limit)}
           </Text>
 
-          <PaginationButton title="Go to next page">
+          <PaginationButton title="Go to next page" onClick={goToNext}>
             <TbChevronRight />
           </PaginationButton>
-          <PaginationButton title="Go to last page">
+          <PaginationButton title="Go to last page" onClick={goToLast}>
             <TbChevronsRight />
           </PaginationButton>
         </Group>

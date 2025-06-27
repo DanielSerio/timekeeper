@@ -5,6 +5,7 @@ import { useTable } from "#core/hooks/useTable";
 import { CATEGORY_COLUMNS } from "#categories/const";
 import { useMutation } from "@tanstack/react-query";
 import type { Row } from "@tanstack/react-table";
+import { createContext, useContext, type PropsWithChildren } from "react";
 
 function useDeleteMutation(
   rowSelection: Record<number, boolean>,
@@ -24,10 +25,10 @@ function useDeleteMutation(
   });
 }
 
-export function useCategoriesTable() {
+function useCategoriesTableState() {
   const {
     query: categoriesQuery,
-    pagingController: [paging],
+    pagingController: [paging, pagingMethods],
     count: totalRecords,
   } = useCategories();
   const [modalState, modalMethods] = useCategoryListModal();
@@ -88,7 +89,30 @@ export function useCategoriesTable() {
     setIsEditMode,
     setRowSelection,
     modalMethods,
+    pagingMethods,
   };
 
   return [state, methods] as const;
 }
+
+const CategoriesTableCtx = createContext<null | ReturnType<
+  typeof useCategoriesTableState
+>>(null);
+
+export const CategoriesTableProvider = ({ children }: PropsWithChildren) => {
+  const state = useCategoriesTableState();
+
+  return (
+    <CategoriesTableCtx.Provider value={state}>
+      {children}
+    </CategoriesTableCtx.Provider>
+  );
+};
+
+export const useCategoriesTable = () => {
+  if (CategoriesTableCtx === null) {
+    throw new Error(`CategoriesTableCtx cannot be null`);
+  }
+
+  return useContext(CategoriesTableCtx)!;
+};
