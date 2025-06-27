@@ -1,11 +1,7 @@
-import type { CategoryRecord } from "#core/types/models/category.model-types";
-import type {
-  ListResponse,
-  PagingRequest,
-} from "#core/types/response/app.response-types";
-
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { CategoriesService } from "#categories/services/categories.service";
+import type { PagingRequest } from "#core/types/response/app.response-types";
 
 export function useCategories() {
   const [count, setCount] = useState(0);
@@ -16,10 +12,10 @@ export function useCategories() {
   const [{ limit, offset }, setPaging] = paging;
 
   const fetchData = async () => {
-    const response = await fetch(
-      `http://localhost:3000/categories?limit=${limit}&offset=${offset}`
-    );
-    const data = (await response.json()) as ListResponse<CategoryRecord>;
+    const data = await CategoriesService.listCategories({
+      limit,
+      offset,
+    });
 
     setCount(data.paging.totals.records);
 
@@ -71,7 +67,7 @@ export function useCategories() {
     count,
     pagingController: [paging[0], methods] as const,
     query: useQuery({
-      queryKey: ["mock", "categories", `limit=${limit}`, `offset=${offset}`],
+      queryKey: ["category", "list", `limit=${limit}`, `offset=${offset}`],
       async queryFn() {
         return await fetchData();
       },
