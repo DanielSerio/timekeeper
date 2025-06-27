@@ -63,6 +63,8 @@ export function useTable<TData, TValue>({
       rowSelection,
       columnVisibility,
     },
+    manualPagination: true,
+    rowCount: query.data?.paging?.totals.records,
     getCoreRowModel: getCoreRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,

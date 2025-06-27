@@ -54,7 +54,7 @@ export class RequestHelpers {
   }
 
   public static getListRequestParams<Ent>(url: string) {
-    const urlObject = new URL(url);
+    const urlObject = new URL(url.startsWith('/') ? `http://localhost:3000${url}` : url);
     const params = urlObject.searchParams;
 
     return {

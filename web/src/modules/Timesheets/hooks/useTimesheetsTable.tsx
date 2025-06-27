@@ -27,7 +27,11 @@ function useDeleteMutation(
 
 export function useTimesheetsTable() {
   const navigate = useNavigate();
-  const timesheetsQuery = useTimesheets();
+  const {
+    query: timesheetsQuery,
+    pagingController: [paging, pagingMethods],
+    count: totalRecords,
+  } = useTimesheets();
   const [modalState, modalMethods] = useTimesheetListModal();
   const {
     gridTemplateColumns,
@@ -74,6 +78,8 @@ export function useTimesheetsTable() {
   const onDeleteClick = () => deleteMutation.mutateAsync();
 
   const state = {
+    totalRecords,
+    paging,
     isEditMode,
     allRowsSelected: allSelected,
     noRowsSelected: noneSelected,
@@ -94,6 +100,7 @@ export function useTimesheetsTable() {
     setIsEditMode,
     setRowSelection,
     modalMethods,
+    pagingMethods,
   };
 
   return [state, methods] as const;

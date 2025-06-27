@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { useForm } from "@mantine/form";
 import { zodResolver } from "mantine-form-zod-resolver";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { CategoriesService } from "#categories/services/categories.service";
 
 export const CreateCategoryValidator = z.object({
   name: z
@@ -20,18 +21,17 @@ function useCreateFormValidator() {
 }
 
 function useCreateMutation() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["category", "create"],
     async mutationFn(formData: z.infer<typeof CreateCategoryValidator>) {
-      const response = await fetch("/api/categories", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+      const data = await CategoriesService.createCategory(formData);
+      await queryClient.invalidateQueries({
+        queryKey: ["category", "list"],
       });
 
-      return await response.json();
+      return data;
     },
   });
 }

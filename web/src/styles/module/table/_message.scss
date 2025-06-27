@@ -1,0 +1,15 @@
+.table-message {
+  min-height: 72px;
+  font-size: 1.5rem;
+  display: grid;
+  place-content: center;
+
+  &.default-tone {
+    opacity: 0.67;
+  }
+
+  &.danger-tone {
+    background: var(--mantine-color-red-light);
+    color: var(--mantine-color-red-text);
+  }
+}
