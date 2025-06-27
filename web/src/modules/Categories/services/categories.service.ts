@@ -1,5 +1,5 @@
 import { ApiService } from "#core/services/api.service";
-import type { CategoryCreate, CategoryRecord } from "#core/types/models/category.model-types";
+import type { CategoryCreate, CategoryRecord, CategoryUpdate } from "#core/types/models/category.model-types";
 import type { ListResponse } from "#core/types/response/app.response-types";
 
 export interface ListCategoriesProps {
@@ -16,6 +16,14 @@ class CategoriesServiceCtor extends ApiService {
 
   async createCategory(body: CategoryCreate) {
     const response = await this.POST('/categories', {
+      body: JSON.stringify(body)
+    });
+
+    return await response.json();
+  }
+
+  async updateCategory(id: number, body: CategoryUpdate) {
+    const response = await this.PATCH(`/categories/${id}`, {
       body: JSON.stringify(body)
     });
 

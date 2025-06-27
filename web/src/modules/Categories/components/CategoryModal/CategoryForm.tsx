@@ -1,19 +1,30 @@
+import { Flex, TextInput } from "@mantine/core";
+import { TbDeviceFloppy } from "react-icons/tb";
 import { useCreateCategory } from "#categories/hooks/useCreateCategory";
 import { useUpdateCategory } from "#categories/hooks/useUpdateCategory";
-import type { CategoryRecord } from "#core/types/models/category.model-types";
-import { Flex, TextInput } from "@mantine/core";
 import { CategoryFormFooter } from "./CategoryFormFooter";
-import { TbDeviceFloppy } from "react-icons/tb";
+import type {
+  CategoryFormProps,
+  CreateCategoryFormProps,
+  UpdateCategoryFormProps,
+} from "./types";
 
-function CreateCategoryForm({ dismiss }: { dismiss: () => void }) {
+function CreateCategoryForm({
+  onSuccess,
+  onError,
+  dismiss,
+}: CreateCategoryFormProps) {
   const { form, submitMutation } = useCreateCategory();
 
   const onSubmit = form.onSubmit((values) => {
     submitMutation.mutate(values, {
       onSuccess: () => {
         dismiss();
+        onSuccess();
       },
-      //TODO: handleError
+      onError(error) {
+        onError(error);
+      },
     });
   });
 
@@ -37,19 +48,21 @@ function CreateCategoryForm({ dismiss }: { dismiss: () => void }) {
 
 function UpdateCategoryForm({
   category,
+  onSuccess,
+  onError,
   dismiss,
-}: {
-  category: CategoryRecord;
-  dismiss: () => void;
-}) {
+}: UpdateCategoryFormProps) {
   const { form, submitMutation } = useUpdateCategory(category);
 
   const onSubmit = form.onSubmit((values) => {
     submitMutation.mutate(values, {
       onSuccess: () => {
         dismiss();
+        onSuccess();
       },
-      //TODO: handleError
+      onError(error) {
+        onError(error);
+      },
     });
   });
 
@@ -73,14 +86,26 @@ function UpdateCategoryForm({
 
 export function CategoryForm({
   category,
+  onSuccess,
+  onError,
   dismiss,
-}: {
-  category?: CategoryRecord;
-  dismiss: () => void;
-}) {
+}: CategoryFormProps) {
   if (category) {
-    return <UpdateCategoryForm category={category} dismiss={dismiss} />;
+    return (
+      <UpdateCategoryForm
+        category={category}
+        dismiss={dismiss}
+        onSuccess={onSuccess}
+        onError={onError}
+      />
+    );
   }
 
-  return <CreateCategoryForm dismiss={dismiss} />;
+  return (
+    <CreateCategoryForm
+      dismiss={dismiss}
+      onSuccess={onSuccess}
+      onError={onError}
+    />
+  );
 }

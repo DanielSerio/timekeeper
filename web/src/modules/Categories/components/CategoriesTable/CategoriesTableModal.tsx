@@ -3,7 +3,8 @@ import { CategoryForm } from "../CategoryModal/CategoryForm";
 import { useCategoriesTable } from "#categories/hooks/useCategoriesTable";
 
 export function CategoriesTableModal() {
-  const [{ modalState }, { modalMethods }] = useCategoriesTable();
+  const [{ modalState }, { modalMethods, pagingMethods, setIsEditMode }] =
+    useCategoriesTable();
 
   return (
     <Modal
@@ -13,6 +14,14 @@ export function CategoriesTableModal() {
     >
       <CategoryForm
         category={modalState?.category}
+        onSuccess={() => {
+          setIsEditMode(false);
+          pagingMethods.goToFirst();
+          //TODO: Toast
+        }}
+        onError={() => {
+          //TODO: Toast
+        }}
         dismiss={() => modalMethods.dismiss()}
       />
     </Modal>

@@ -3,6 +3,7 @@ import { useForm } from "@mantine/form";
 import { zodResolver } from "mantine-form-zod-resolver";
 import type { CategoryRecord } from "#core/types/models/category.model-types";
 import { useMutation } from "@tanstack/react-query";
+import { CategoriesService } from "#categories/services/categories.service";
 
 export const UpdateCategoryValidator = z.object({
   name: z
@@ -24,15 +25,9 @@ function useUpdateMutation(categoryId: Pick<CategoryRecord, "id">["id"]) {
   return useMutation({
     mutationKey: ["category", "update", categoryId],
     async mutationFn(formData: z.infer<typeof UpdateCategoryValidator>) {
-      const response = await fetch(`/api/categories/${categoryId}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const data = await CategoriesService.updateCategory(categoryId, formData);
 
-      return await response.json();
+      return data;
     },
   });
 }
