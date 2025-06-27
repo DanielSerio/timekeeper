@@ -1,6 +1,7 @@
 import { Modal } from "@mantine/core";
 import { CategoryForm } from "../CategoryModal/CategoryForm";
 import { useCategoriesTable } from "#categories/hooks/useCategoriesTable";
+import { notifications } from "@mantine/notifications";
 
 export function CategoriesTableModal() {
   const [{ modalState }, { modalMethods, pagingMethods, setIsEditMode }] =
@@ -14,13 +15,22 @@ export function CategoriesTableModal() {
     >
       <CategoryForm
         category={modalState?.category}
-        onSuccess={() => {
+        onSuccess={(type: "update" | "create") => {
           setIsEditMode(false);
           pagingMethods.goToFirst();
-          //TODO: Toast
+
+          notifications.show({
+            color: "green",
+            title: "Success",
+            message: `Succesfully ${type}d category`,
+          });
         }}
-        onError={() => {
-          //TODO: Toast
+        onError={(error) => {
+          notifications.show({
+            color: "red",
+            title: "Error",
+            message: error.message,
+          });
         }}
         dismiss={() => modalMethods.dismiss()}
       />

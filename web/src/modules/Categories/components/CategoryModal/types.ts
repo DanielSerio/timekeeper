@@ -3,7 +3,7 @@ import type { CategoryRecord } from "#core/types/models/category.model-types";
 export interface CategoryFormPropsBasis {
   category?: CategoryRecord;
   onError: (error: Error) => void;
-  onSuccess: () => void;
+  onSuccess: (type: 'update' | 'create') => void;
   dismiss: () => void;
 }
 

@@ -28,6 +28,8 @@ export function TimesheetsTable() {
       rowSelection,
       isEditMode,
       modalState,
+      totalRecords,
+      paging,
       allRowsSelected: allSelected,
       noRowsSelected: noneSelected,
     },
@@ -40,6 +42,7 @@ export function TimesheetsTable() {
       onDeleteClick,
       onChangeSelectionStateForAll,
       modalMethods,
+      pagingMethods,
     },
   ] = useTimesheetsTable();
 
@@ -52,7 +55,12 @@ export function TimesheetsTable() {
         justify="space-between"
       >
         <Group>
-          <Pagination />
+          <Pagination
+            totalRecords={totalRecords}
+            limit={paging.limit}
+            offset={paging.offset}
+            pagingMethods={pagingMethods}
+          />
         </Group>
         <Group>
           {isEditMode && (

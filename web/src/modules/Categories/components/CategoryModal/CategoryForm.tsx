@@ -20,7 +20,7 @@ function CreateCategoryForm({
     submitMutation.mutate(values, {
       onSuccess: () => {
         dismiss();
-        onSuccess();
+        onSuccess("create");
       },
       onError(error) {
         onError(error);
@@ -58,7 +58,7 @@ function UpdateCategoryForm({
     submitMutation.mutate(values, {
       onSuccess: () => {
         dismiss();
-        onSuccess();
+        onSuccess("update");
       },
       onError(error) {
         onError(error);

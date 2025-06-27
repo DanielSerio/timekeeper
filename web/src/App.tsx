@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { routeTree } from "./routeTree.gen";
 import type { PropsWithChildren } from "react";
 import { MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 
 const QUERY_CLIENT = new QueryClient();
 
@@ -28,6 +29,7 @@ function Providers({ children }: PropsWithChildren) {
 export function App() {
   return (
     <Providers>
+      <Notifications />
       <RouterProvider router={router} />
     </Providers>
   );

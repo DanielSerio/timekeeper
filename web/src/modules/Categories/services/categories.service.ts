@@ -31,7 +31,7 @@ class CategoriesServiceCtor extends ApiService {
   }
 
   async deleteCategories(ids: number[]) {
-    const response = await this.POST('/categories/delete', {
+    const response = await this.PATCH('/categories/delete', {
       body: JSON.stringify(ids)
     });
 
