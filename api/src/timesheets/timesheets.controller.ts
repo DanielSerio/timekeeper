@@ -146,6 +146,7 @@ export class TimesheetsController {
     const parsed = this.parseInput(updateTimesheetDto, 'update') as {
       name: string;
       date: Date;
+      deleteLines: number[];
       lines: {
         categoryId: number;
         startTime: string;
