@@ -3,7 +3,7 @@ import { TimesheetsTableProvider } from "#timesheets/hooks/useTimesheetsTable";
 import { TimesheetsTableBody } from "./TimesheetsTableBody";
 import { TimesheetsTableHead } from "./TimesheetsTableHead";
 import { TimesheetsTableToolbar } from "./TimesheetsTableToolbar";
-import { TimesheetsTableModal } from "./TimesheetsTableModal";
+import { TimesheetsTableModal } from "../TimesheetsModal/TimesheetsTableModal";
 
 export function TimesheetsTable() {
   return (

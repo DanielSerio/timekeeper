@@ -1,3 +1,5 @@
+import type { ZodError } from "zod";
+
 export type ServiceVersion = `v${number}`;
 
 export interface ApiServiceProps {
@@ -38,9 +40,68 @@ export abstract class ApiService {
     }
   };
 
+  private isZodError<T>(error: unknown): error is ZodError<T> {
+    const asZod = error as ZodError<T>;
+
+    if (asZod.issues && asZod.errors) {
+      return true;
+    }
+
+    return false;
+  }
+
+  private isError(error: unknown): error is Error {
+    const asError = error as Error;
+
+    if (asError.name && asError.message) {
+      return true;
+    }
+
+    return false;
+  }
+
+  private handleApiError(error: unknown) {
+    if (this.isError(error)) {
+      return error as Error;
+    }
+
+    const newError = new Error(`Non-error object thrown: ${JSON.stringify(error)}`);
+    newError.name = 'NonErrorThrown';
+
+    return newError;
+  }
+
+  private handleClientError<T>(response: Response) {
+    const error = response.json() as unknown;
+
+    if (this.isZodError<T>(error)) {
+      return error as ZodError<T>;
+    }
+
+    return this.handleApiError(error);
+  }
+
+  private handleNotFoundError(response: Response) {
+    const error = response.json() as unknown;
+
+    return this.handleApiError(error);
+  }
+
+  private handleErrorResponse(response: Response) {
+    if (response.status === 400) {
+      return this.handleClientError(response);
+    } else if (response.status === 404) {
+      return this.handleNotFoundError(response);
+    }
+
+    const error = response.json() as unknown;
+
+    return this.handleApiError(error);
+  }
+
   private apiRequest = async <RT>(method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE', url: string, init?: ApiMethodOptions) => {
     const apiUrl = this.apiUrl(url);
-    return await fetch(apiUrl, {
+    const response = await fetch(apiUrl, {
       method,
       ...init,
       headers: {
@@ -48,6 +109,12 @@ export abstract class ApiService {
         ...init?.headers,
       },
     }) as Response & RT;
+
+    if (!response.ok) {
+      throw this.handleErrorResponse(response);
+    }
+
+    return response;
   };
 
   protected GET<RT extends object | undefined>(url: string, init?: ApiMethodOptions) {
