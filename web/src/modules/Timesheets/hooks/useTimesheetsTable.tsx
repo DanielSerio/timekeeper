@@ -5,24 +5,39 @@ import { useTable } from "#core/hooks/useTable";
 import { TIMESHEET_COLUMNS } from "#timesheets/const";
 import type { TimesheetRecord } from "#core/types/models/timesheet.model-types";
 import type { Row } from "@tanstack/react-table";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createContext, useContext, type PropsWithChildren } from "react";
+import { TimesheetService } from "#timesheets/services/timesheet.service";
+import { notifications } from "@mantine/notifications";
 
 function useDeleteMutation(
   rowSelection: Record<number, boolean>,
-  rows: Row<TimesheetRecord>[]
+  rows: Row<TimesheetRecord>[],
+  on: {
+    onSuccess: () => void;
+    onError: (error: Error) => void;
+  }
 ) {
+  const queryClient = useQueryClient();
+
   const ids = Object.entries(rowSelection)
     .filter(([_, selected]) => selected)
     .map(
-      ([rowIndex]) => rows.find((row) => row.index === +rowIndex)?.id ?? null
+      ([rowIndex]) =>
+        rows.find((row) => row.index === +rowIndex)?.original.id ?? null
     )
     .filter((rowId) => rowId !== null);
   return useMutation({
     mutationKey: ["delete", "timesheets", `ids=${ids.toString()}`],
     async mutationFn() {
-      alert(ids);
+      await TimesheetService.deleteTimesheets(ids);
+
+      await queryClient.invalidateQueries({
+        queryKey: ["timesheets", "list"],
+      });
     },
+    onSuccess: on.onSuccess,
+    onError: (error) => on.onError(error),
   });
 }
 
@@ -46,7 +61,27 @@ function useTimesheetsTableState() {
   const rowModel = table.getRowModel();
   const count = rowModel.rows.length;
 
-  const deleteMutation = useDeleteMutation(rowSelection, rowModel.rows);
+  const deleteMutation = useDeleteMutation(rowSelection, rowModel.rows, {
+    onSuccess: () => {
+      setIsEditMode(false);
+
+      notifications.show({
+        color: "green",
+        title: "Success",
+        message: `Successfully deleted timesheets`,
+      });
+    },
+    onError(error) {
+      setRowSelection({});
+      setIsEditMode(false);
+
+      notifications.show({
+        color: "red",
+        title: "Error",
+        message: error.message,
+      });
+    },
+  });
 
   const onChangeSelectionStateForAll = (value: boolean) =>
     setRowSelection(() => {
