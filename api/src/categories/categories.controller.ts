@@ -14,7 +14,7 @@ import { Request } from 'express';
 
 @Controller('categories')
 export class CategoriesController {
-  private entityValidator = z.number().int().positive();
+  private entityValidator = z.coerce.number().int().positive();
 
   validateId = this.entityValidator.parse;
   validateIds = z.array(this.entityValidator).parse;
