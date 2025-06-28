@@ -10,6 +10,12 @@ class TimesheetServiceCtor extends ApiService {
     return await response.json() as ListResponse<TimesheetRecord>;
   }
 
+  async findTimesheet(id: number) {
+    const response = await this.GET(`/timesheets/${id}`);
+
+    return await response.json() as TimesheetRecord;
+  }
+
   async createTimesheet(body: TimesheetCreate) {
     const response = await this.POST('/timesheets', {
       body: JSON.stringify(body)
