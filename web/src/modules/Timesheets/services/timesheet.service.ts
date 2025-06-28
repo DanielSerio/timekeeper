@@ -18,8 +18,6 @@ class TimesheetServiceCtor extends ApiService {
     return await response.json() as TimesheetRecord;
   }
 
-  async updateTimesheet() { }
-
   async deleteTimesheets(ids: number[]) {
     const response = await this.PATCH('/timesheets/delete', {
       body: JSON.stringify(ids)
