@@ -23,7 +23,7 @@ interface TimesheetRecordBase extends TimesheetCreateBase {
   lastUpdatedAt: Date | null;
 }
 
-export type TimesheetCreate = Pretty<TimesheetCreateBase>;
+export type TimesheetCreate = Pretty<TimesheetCreateBase> & { lines: TimesheetLineCreate[]; };
 export type TimesheetUpdate = Pretty<TimesheetUpdateBase>;
 export type TimesheetRecord = Pretty<TimesheetRecordBase>;
 

@@ -24,11 +24,11 @@ function useCreateMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ["category", "create"],
+    mutationKey: ["categories", "create"],
     async mutationFn(formData: z.infer<typeof CreateCategoryValidator>) {
       const data = await CategoriesService.createCategory(formData);
       await queryClient.invalidateQueries({
-        queryKey: ["category", "list"],
+        queryKey: ["categories", "list"],
       });
 
       return data;
