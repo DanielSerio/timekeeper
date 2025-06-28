@@ -11,7 +11,12 @@ export function TimesheetNoteCell({
 }) {
   return (
     <TimesheetCell name="note">
-      <Textarea autosize size="xs" value={note ?? ""} onChange={onChange} />
+      <Textarea
+        autosize
+        size="xs"
+        defaultValue={note ?? ""}
+        onBlur={onChange}
+      />
     </TimesheetCell>
   );
 }

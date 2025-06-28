@@ -1,5 +1,5 @@
 import type { NestedArray } from "#core/types";
-import { filter } from "../array";
+import { filter } from "../iterator";
 
 type ClassNameParam = string | false | null | undefined;
 
