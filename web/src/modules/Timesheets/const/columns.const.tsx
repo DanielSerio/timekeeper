@@ -1,7 +1,9 @@
 import type { CustomColumnDef } from "#core/components/Table/types";
 import type { TimesheetRecord } from "#core/types/models/timesheet.model-types";
-import { Box } from "@mantine/core";
-import { format } from "date-fns";
+import {
+  renderCreatedAtDate,
+  renderLastUpdatedDate,
+} from "#core/utilities/table/render-date";
 
 export const TIMESHEET_COLUMNS: CustomColumnDef<TimesheetRecord>[] = [
   {
@@ -31,9 +33,7 @@ export const TIMESHEET_COLUMNS: CustomColumnDef<TimesheetRecord>[] = [
     isActionColumn: true,
     align: "right",
     accessorKey: "date",
-    accessorFn(row) {
-      return format(row.date, "yyyy/MM/dd");
-    },
+    accessorFn: renderCreatedAtDate<TimesheetRecord, "date">("date"),
   },
   {
     id: "lastUpdatedAt",
@@ -41,14 +41,6 @@ export const TIMESHEET_COLUMNS: CustomColumnDef<TimesheetRecord>[] = [
     size: 192,
     align: "right",
     accessorKey: "lastUpdatedAt",
-    accessorFn(row) {
-      const updateDate = row.lastUpdatedAt;
-
-      if (!updateDate) {
-        return <Box className="muted">--</Box>;
-      }
-
-      return format(updateDate, "yyyy/MM/dd");
-    },
+    accessorFn: renderLastUpdatedDate<TimesheetRecord, "date">,
   },
 ];

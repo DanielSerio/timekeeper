@@ -1,7 +1,9 @@
 import type { CustomColumnDef } from "#core/components/Table/types";
 import type { CategoryRecord } from "#core/types/models/category.model-types";
-import { Box } from "@mantine/core";
-import { format } from "date-fns";
+import {
+  renderCreatedAtDate,
+  renderLastUpdatedDate,
+} from "#core/utilities/table/render-date";
 
 export const CATEGORY_COLUMNS: CustomColumnDef<CategoryRecord>[] = [
   {
@@ -30,9 +32,7 @@ export const CATEGORY_COLUMNS: CustomColumnDef<CategoryRecord>[] = [
     size: 192,
     align: "right",
     accessorKey: "createdAt",
-    accessorFn(row) {
-      return format(row.createdAt, "yyyy/MM/dd");
-    },
+    accessorFn: renderCreatedAtDate<CategoryRecord>("createdAt"),
   },
   {
     id: "lastUpdatedAt",
@@ -40,14 +40,6 @@ export const CATEGORY_COLUMNS: CustomColumnDef<CategoryRecord>[] = [
     size: 192,
     align: "right",
     accessorKey: "lastUpdatedAt",
-    accessorFn(row) {
-      const updateDate = row.lastUpdatedAt;
-
-      if (!updateDate) {
-        return <Box className="muted">--</Box>;
-      }
-
-      return format(updateDate, "yyyy/MM/dd");
-    },
+    accessorFn: renderLastUpdatedDate<CategoryRecord>,
   },
 ];
