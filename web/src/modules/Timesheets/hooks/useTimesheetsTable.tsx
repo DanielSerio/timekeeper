@@ -6,6 +6,7 @@ import { TIMESHEET_COLUMNS } from "#timesheets/const";
 import type { TimesheetRecord } from "#core/types/models/timesheet.model-types";
 import type { Row } from "@tanstack/react-table";
 import { useMutation } from "@tanstack/react-query";
+import { createContext, useContext, type PropsWithChildren } from "react";
 
 function useDeleteMutation(
   rowSelection: Record<number, boolean>,
@@ -25,7 +26,7 @@ function useDeleteMutation(
   });
 }
 
-export function useTimesheetsTable() {
+function useTimesheetsTableState() {
   const navigate = useNavigate();
   const {
     query: timesheetsQuery,
@@ -105,3 +106,24 @@ export function useTimesheetsTable() {
 
   return [state, methods] as const;
 }
+type TimesheetsTableState = ReturnType<typeof useTimesheetsTableState>;
+
+const TimesheetsTableCtx = createContext<TimesheetsTableState | null>(null);
+
+export const TimesheetsTableProvider = ({ children }: PropsWithChildren) => {
+  const state = useTimesheetsTableState();
+
+  return (
+    <TimesheetsTableCtx.Provider value={state}>
+      {children}
+    </TimesheetsTableCtx.Provider>
+  );
+};
+
+export const useTimesheetsTable = () => {
+  if (TimesheetsTableCtx === null) {
+    throw new Error(`No provider for TimesheetsTableCtx`);
+  }
+
+  return useContext(TimesheetsTableCtx)!;
+};
