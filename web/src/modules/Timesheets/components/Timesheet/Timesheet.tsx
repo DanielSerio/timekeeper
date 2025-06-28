@@ -6,7 +6,8 @@ export interface TimesheetProps {
   isLoading?: boolean;
   editModeController: ReturnType<typeof useTimesheetEditMode>;
 }
-
+//TODO: Timesheet save
+//TODO: Timesheet cancel
 export function Timesheet({
   isLoading,
   editModeController: [isEditMode],
