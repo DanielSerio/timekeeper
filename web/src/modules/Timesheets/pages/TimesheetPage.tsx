@@ -23,7 +23,10 @@ export function TimesheetPage({ id }: { id: number }) {
           viewTimesheetController={viewTimesheetController}
         />
         {isEditMode ? (
-          <Timesheet isLoading={timesheetQuery.isLoading} />
+          <Timesheet
+            isLoading={timesheetQuery.isLoading}
+            editModeController={editModeController}
+          />
         ) : (
           <ViewTimesheet
             isLoading={timesheetQuery.isLoading}

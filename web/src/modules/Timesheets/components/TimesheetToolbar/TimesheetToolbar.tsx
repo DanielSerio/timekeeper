@@ -3,7 +3,8 @@ import type {
   useViewTimesheetMode,
   ViewTimesheetMode,
 } from "#timesheets/hooks/useViewTimesheetMode";
-import { Flex, SegmentedControl, Switch } from "@mantine/core";
+import { Button, Flex, Group, SegmentedControl } from "@mantine/core";
+import { TbCancel, TbDeviceFloppy } from "react-icons/tb";
 
 export function TimesheetToolbar({
   isLoading,
@@ -14,6 +15,10 @@ export function TimesheetToolbar({
   editModeController: ReturnType<typeof useTimesheetEditMode>;
   viewTimesheetController: ReturnType<typeof useViewTimesheetMode>;
 }) {
+  const onEditClick = () => open();
+  const onCancelClick = () => close();
+  const onSaveClick = () => close();
+
   return (
     <Flex
       className="timesheet-toolbar"
@@ -22,20 +27,39 @@ export function TimesheetToolbar({
       p="xs"
       h={48}
     >
-      <Switch
-        label="Edit Mode"
-        checked={isEditMode}
-        disabled={isLoading}
-        onChange={(ev) => {
-          if (ev.currentTarget.checked) {
-            open();
-          } else {
-            close();
-          }
-        }}
-      />
+      <Group>
+        {!isEditMode ? (
+          <Button
+            disabled={isLoading}
+            size="xs"
+            rightSection={<TbDeviceFloppy />}
+            onClick={onEditClick}
+          >
+            Edit
+          </Button>
+        ) : (
+          <>
+            <Button
+              color="gray"
+              size="xs"
+              rightSection={<TbCancel />}
+              onClick={onCancelClick}
+            >
+              Cancel
+            </Button>
+            <Button
+              size="xs"
+              rightSection={<TbDeviceFloppy />}
+              onClick={onSaveClick}
+            >
+              Save
+            </Button>
+          </>
+        )}
+      </Group>
       {!isEditMode && (
         <SegmentedControl
+          disabled={isLoading}
           size="xs"
           data={["By Time", "By Category"]}
           value={viewMode}

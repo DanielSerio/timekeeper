@@ -1,7 +1,19 @@
-import { Anchor, Button, Flex, Group, Text } from "@mantine/core";
-import { TbDeviceFloppy } from "react-icons/tb";
+import { useTimesheetContext } from "#timesheets/providers/timesheet/timesheet.provider";
+import { Anchor, Flex, Group, Text } from "@mantine/core";
+import { useRef } from "react";
 
-export function TimesheetHeader({}: { isLoading?: boolean }) {
+export interface TimesheetHeaderProps {
+  isLoading?: boolean;
+  isEditMode: boolean;
+}
+
+export function TimesheetHeader({
+  isLoading,
+  isEditMode,
+}: TimesheetHeaderProps) {
+  const nameElementRef = useRef<HTMLDivElement>(null);
+  const [state, methods] = useTimesheetContext();
+
   return (
     <Flex
       className="timesheet-header"
@@ -14,13 +26,26 @@ export function TimesheetHeader({}: { isLoading?: boolean }) {
         <span>&lt;&nbsp;Back To Timesheets</span>
       </Anchor>
       <Group>
-        <Text
-          contentEditable
-          dangerouslySetInnerHTML={{ __html: "Timesheet 2025/06/28" }}
-        />
-        <Button size="xs" rightSection={<TbDeviceFloppy />}>
-          <Text>Save</Text>
-        </Button>
+        {!!state.name && !isLoading && (
+          <Text
+            ref={nameElementRef}
+            contentEditable={!isLoading && isEditMode}
+            dangerouslySetInnerHTML={{ __html: state.name }}
+            style={
+              isEditMode
+                ? {
+                    border: "1px dotted grey",
+                    padding: "6px 12px",
+                  }
+                : undefined
+            }
+            onBlur={() => {
+              if (!!methods.changeName && nameElementRef?.current?.innerText) {
+                methods.changeName(nameElementRef.current.innerText);
+              }
+            }}
+          />
+        )}
       </Group>
     </Flex>
   );
