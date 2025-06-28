@@ -1,23 +1,24 @@
 import { ApiService } from "#core/services/api.service";
-import type { PagingRequest } from "#core/types/response/app.response-types";
-import { createMockTimesheets } from "#core/utilities/mock";
+import type { TimesheetCreate, TimesheetRecord } from "#core/types/models/timesheet.model-types";
+import type { ListResponse, PagingRequest } from "#core/types/response/app.response-types";
+
 
 class TimesheetServiceCtor extends ApiService {
-  listTimesheets({ }: PagingRequest) {
-    const { timesheets } = createMockTimesheets(11);
+  async listTimesheets({ limit, offset }: PagingRequest) {
+    const response = await this.GET(`/timesheets?limit=${limit}&offset=${offset}`);
 
-    return {
-      paging: {
-        limit: 25,
-        offset: 0,
-        totals: {
-          pages: 1,
-          records: timesheets.length
-        }
-      },
-      records: timesheets
-    };
+    return await response.json() as ListResponse<TimesheetRecord>;
   }
+
+  async createTimesheet(body: TimesheetCreate) {
+    const response = await this.POST('/timesheets', {
+      body: JSON.stringify(body)
+    });
+
+    return await response.json() as TimesheetRecord;
+  }
+
+  async updateTimesheet() { }
 }
 
 export const TimesheetService = new TimesheetServiceCtor();
