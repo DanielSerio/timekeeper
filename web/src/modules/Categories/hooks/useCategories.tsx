@@ -67,7 +67,7 @@ export function useCategories() {
     count,
     pagingController: [paging[0], methods] as const,
     query: useQuery({
-      queryKey: ["category", "list", `limit=${limit}`, `offset=${offset}`],
+      queryKey: ["categories", "list", `limit=${limit}`, `offset=${offset}`],
       async queryFn() {
         return await fetchData();
       },
