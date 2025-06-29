@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateTimesheetDto, CreateTimesheetLineDto } from './dto/create-timesheet.dto';
 import { UpdateTimesheetDto, UpdateTimesheetLineDto } from './dto/update-timesheet.dto';
 import { DataSource, DeleteResult, Filter, FindManyOptions, FindOptionsOrder, In, Repository } from 'typeorm';
@@ -77,18 +77,33 @@ export class TimesheetsService {
     return this.linesRepo.delete(lineIds);
   }
 
-  private async createTimesheetLine(line: CreateTimesheetLineDto) {
+  private async createTimesheetLine(timesheetId: number, line: CreateTimesheetLineDto) {
+    if (!timesheetId) {
+      throw new BadRequestException(`createTimesheetLine: Timesheet ID cannot be null`);
+    }
+
     const lineEnt = new TimesheetLine();
 
-    Object.assign(lineEnt, line);
+    lineEnt.startTime = line.startTime;
+    lineEnt.endTime = line.endTime;
+    lineEnt.categoryId = line.categoryId;
+    lineEnt.note = line.note;
 
-    return await this.linesRepo.save(lineEnt);
+    return await this.linesRepo.save({
+      ...lineEnt,
+      timesheetId
+    });
   }
 
-  private async updateTimesheetLine({ id, ...line }: UpdateTimesheetLineDto) {
+  private async updateTimesheetLine(timesheetId: number, { id, ...line }: UpdateTimesheetLineDto) {
+    if (!timesheetId) {
+      throw new BadRequestException(`updateTimesheetLine: Timesheet ID cannot be null`);
+    }
+
     const found = await this.linesRepo.findOne({
       where: {
-        id
+        id,
+        timesheetId
       }
     });
 
@@ -96,24 +111,64 @@ export class TimesheetsService {
       throw new NotFoundException(`Timesheet line with id '${id}' not found`);
     }
 
-    Object.assign(found, line);
+    try {
+      if (line.startTime) {
+        found.startTime = line.startTime;
+      }
 
-    return await this.linesRepo.save(found);
+      if (line.endTime) {
+        found.endTime = line.endTime;
+      }
+
+      if (line.categoryId) {
+        found.categoryId = line.categoryId;
+      }
+
+      found.note = line.note ?? null;
+
+      console.info('updateTimesheetLine: ', {
+        timesheetId,
+        id: found.id,
+        categoryId: found.categoryId,
+        startTime: found.startTime,
+        endTime: found.endTime,
+        note: found.note
+      });
+
+      return await this.linesRepo.save({
+        timesheetId,
+        id: found.id,
+        categoryId: found.categoryId,
+        startTime: found.startTime,
+        endTime: found.endTime,
+        note: found.note
+      });
+    } catch (error) {
+      console.error(`updateTimesheetLine ${id}:`, error);
+
+      throw error;
+    }
   }
 
-  private async upsertTimesheetLines(lines: (CreateTimesheetLineDto | UpdateTimesheetLineDto)[]) {
+  private upsertTimesheetLines = async (timesheetId: number, lines: (CreateTimesheetLineDto | UpdateTimesheetLineDto)[]) => {
     const promises = [] as Promise<TimesheetLine>[];
 
-    for (const lineParams of lines) {
-      if (lineParams.id) {
-        promises.push(this.updateTimesheetLine(lineParams as UpdateTimesheetLineDto));
-      } else {
-        promises.push(this.createTimesheetLine(lineParams as CreateTimesheetLineDto));
+    const mappedParams = lines.map((lineParams) => ({ ...lineParams, timesheetId }) as CreateTimesheetLineDto | UpdateTimesheetLineDto);
+
+    if (mappedParams && mappedParams.length) {
+      for (const lineParams of mappedParams) {
+        if (lineParams.id) {
+          promises.push(this.updateTimesheetLine(timesheetId, { ...lineParams } as UpdateTimesheetLineDto));
+        } else {
+          promises.push(this.createTimesheetLine(timesheetId, { ...lineParams } as CreateTimesheetLineDto));
+        }
       }
     }
 
+    console.info('All promises created');
+
     return await Promise.all(promises);
-  }
+  };
 
   private getLineForTimesheet(timesheetId: number, select: (keyof TimesheetLineRecord)[] = ['id']) {
     return this.linesRepo.find({
@@ -128,10 +183,9 @@ export class TimesheetsService {
     const timesheet = new Timesheet();
 
     Object.assign(timesheet, createTimesheetDto);
-
-    const createdLines = await this.upsertTimesheetLines(lines);
-
     const created = await this.repo.save(timesheet);
+
+    const createdLines = await this.upsertTimesheetLines(created.id, lines);
 
     return {
       created,
@@ -218,28 +272,41 @@ export class TimesheetsService {
   }
 
   async updateTimesheet(id: number, updateTimesheetDto: UpdateTimesheetDto) {
-    const timesheet = await this.findTimesheet(id);
-    const { lines, deleteLines, ...updateProps } = updateTimesheetDto;
+    try {
+      const { lines: _fetchedLines, ...timesheet } = await this.findTimesheet(id);
+      const { lines, deleteLines, ...updateProps } = updateTimesheetDto;
 
-    Object.assign(timesheet, updateProps);
-    let deleteLinesResult: undefined | DeleteResult;
-    let updatedLines: undefined | TimesheetLine[];
+      if (!!updateProps.name && updateProps.name !== timesheet.name) {
+        timesheet.name = updateProps.name;
+      }
 
-    if (deleteLines?.length) {
-      deleteLinesResult = await this.deleteTimesheetLines(deleteLines);
+      let deleteLinesResult: undefined | DeleteResult;
+      let updatedLines: undefined | TimesheetLine[];
+
+      if (deleteLines?.length) {
+        deleteLinesResult = await this.deleteTimesheetLines(deleteLines);
+      }
+
+      if (lines?.length) {
+        updatedLines = await this.upsertTimesheetLines(id, [...lines].map((line) => ({ ...line, timesheetId: id })));
+      }
+
+      const updated = await this.repo.save({
+        ...timesheet,
+        timesheetId: id
+      });
+
+      return {
+        updated,
+        updatedLines,
+        deleteLinesResult
+      };
+    } catch (err) {
+      console.error(`updateTimesheet: ${id}`, err, updateTimesheetDto);
+
+      throw err;
     }
 
-    if (lines?.length) {
-      updatedLines = await this.upsertTimesheetLines(lines);
-    }
-
-    const updated = await this.repo.save(timesheet);
-
-    return {
-      updated,
-      updatedLines,
-      deleteLinesResult
-    };
   }
 
   async removeTimesheet(id: number) {

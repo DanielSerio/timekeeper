@@ -27,6 +27,11 @@ export type TimesheetCreate = Pretty<TimesheetCreateBase> & { lines: TimesheetLi
 export type TimesheetUpdate = Pretty<TimesheetUpdateBase>;
 export type TimesheetRecord = Pretty<TimesheetRecordBase>;
 
+interface SaveLines {
+  lines: (TimesheetLineCreate | TimesheetLineUpdate | TimesheetLineRecord)[];
+  deleteLines: number[] | null;
+}
+
 export type ExtendedTimesheetCreate = Pretty<TimesheetCreateBase & { lines: TimesheetLineCreate[]; }>;
-export type ExtendedTimesheetUpdate = Pretty<TimesheetRecordBase & { lines: (TimesheetLineCreate | TimesheetLineUpdate | TimesheetLineRecord)[]; }>;
+export type ExtendedTimesheetUpdate = Pretty<Omit<TimesheetRecordBase, 'id' | 'lastUpdatedAt' | 'date'> & SaveLines>;
 export type ExtendedTimesheetRecord = Pretty<TimesheetRecordBase & { lines: TimesheetLineRecord[]; }>;

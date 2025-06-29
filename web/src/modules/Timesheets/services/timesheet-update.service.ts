@@ -1,20 +1,13 @@
 import { ApiService } from "#core/services/api.service";
-import type { TimesheetLineCreate, TimesheetLineUpdate } from "#core/types/models/timesheet-line.model-types";
-
-export interface LinesOperation {
-  lines?: (TimesheetLineCreate | TimesheetLineUpdate)[];
-  deleteLines?: number[];
-}
-
-export interface FullTimesheetUpdate extends LinesOperation {
-  date?: Date;
-  name?: string | null | undefined;
-}
+import type { ExtendedTimesheetUpdate } from "#core/types/models/timesheet.model-types";
 
 class TimesheetUpdateServiceCtor extends ApiService {
-  async updateTimesheet(id: number, update: FullTimesheetUpdate) {
+  async updateTimesheet(id: number, update: ExtendedTimesheetUpdate) {
     const response = await this.PATCH(`/timesheets/${id}`, {
-      body: JSON.stringify(update)
+      body: JSON.stringify({
+        ...update,
+        deleteLines: update.deleteLines ?? null
+      })
     });
 
     return await response.json();

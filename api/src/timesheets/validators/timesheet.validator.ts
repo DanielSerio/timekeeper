@@ -32,6 +32,14 @@ export class TimesheetValidator implements EntityValidator<ExtendedTimesheetCrea
     lastUpdatedAt: z.coerce.date().nullable()
   });
 
+  clientUpdateLine = z.object({
+    id: z.number().int().positive().nullable().optional(),
+    categoryId: this._COMMON.categoryId,
+    startTime: this._COMMON.startTime,
+    endTime: this._COMMON.endTime,
+    note: this._COMMON.note,
+  });
+
   create = z.object({
     date: this._COMMON.date,
     name: this._COMMON.name,
@@ -39,10 +47,9 @@ export class TimesheetValidator implements EntityValidator<ExtendedTimesheetCrea
   });
 
   update = z.object({
-    date: this._COMMON.date,
     name: this._COMMON.name,
-    lines: z.array(this.updateLine),
-    removeLines: z.array(z.number().int().positive())
+    lines: z.array(this.clientUpdateLine),
+    removeLines: z.array(z.number().int().positive()).nullable().optional()
   });
 
   delete = z.object({

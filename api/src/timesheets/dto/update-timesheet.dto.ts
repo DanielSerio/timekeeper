@@ -3,6 +3,7 @@ import { CreateTimesheetLineDto } from './create-timesheet.dto';
 
 export class UpdateTimesheetLineDto extends PartialType(CreateTimesheetLineDto) {
   id: number;
+  timesheetId?: number;
 }
 
 export class UpdateTimesheetDto {

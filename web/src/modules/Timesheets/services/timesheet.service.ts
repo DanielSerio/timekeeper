@@ -1,4 +1,5 @@
 import { ApiService } from "#core/services/api.service";
+import type { TimesheetLineRecord } from "#core/types/models/timesheet-line.model-types";
 import type { TimesheetCreate, TimesheetRecord } from "#core/types/models/timesheet.model-types";
 import type { ListResponse, PagingRequest } from "#core/types/response/app.response-types";
 
@@ -13,7 +14,7 @@ class TimesheetServiceCtor extends ApiService {
   async findTimesheet(id: number) {
     const response = await this.GET(`/timesheets/${id}`);
 
-    return await response.json() as TimesheetRecord;
+    return await response.json() as TimesheetRecord & { lines: TimesheetLineRecord[]; };
   }
 
   async createTimesheet(body: TimesheetCreate) {

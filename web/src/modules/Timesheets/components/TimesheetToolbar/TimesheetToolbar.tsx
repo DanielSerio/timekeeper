@@ -1,10 +1,14 @@
+import { CancellableSaveButton } from "#core/components/buttons/CancellableSaveButton";
+import { useSaveTimesheet } from "#timesheets/hooks/useSaveTimesheet";
 import type { useTimesheetEditMode } from "#timesheets/hooks/useTimesheetEditMode";
 import type {
   useViewTimesheetMode,
   ViewTimesheetMode,
 } from "#timesheets/hooks/useViewTimesheetMode";
-import { Button, Flex, Group, SegmentedControl } from "@mantine/core";
-import { TbCancel, TbDeviceFloppy } from "react-icons/tb";
+import { useTimesheetContext } from "#timesheets/providers/timesheet/timesheet.provider";
+import { Flex, Group, SegmentedControl } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import { TbCancel, TbDeviceFloppy, TbEdit } from "react-icons/tb";
 
 export function TimesheetToolbar({
   isLoading,
@@ -15,9 +19,39 @@ export function TimesheetToolbar({
   editModeController: ReturnType<typeof useTimesheetEditMode>;
   viewTimesheetController: ReturnType<typeof useViewTimesheetMode>;
 }) {
+  const [state, { reset }] = useTimesheetContext();
+  const saveMutation = useSaveTimesheet(state.timesheetId, {
+    onSuccess() {
+      notifications.show({
+        color: "green",
+        title: "Success",
+        message: "Successfully saved timesheet",
+      });
+
+      close();
+    },
+    onError(error) {
+      notifications.show({
+        color: "red",
+        title: "Error",
+        message: error.message,
+      });
+
+      close();
+    },
+  });
+
   const onEditClick = () => open();
-  const onCancelClick = () => close();
-  const onSaveClick = () => close();
+  const onCancelClick = () => {
+    reset();
+    close();
+  };
+  const onSaveClick = async () =>
+    await saveMutation.mutateAsync({
+      name: state.name,
+      lines: state.lines,
+      deleteLines: state.deleteLines,
+    });
 
   return (
     <Flex
@@ -28,34 +62,22 @@ export function TimesheetToolbar({
       h={48}
     >
       <Group>
-        {!isEditMode ? (
-          <Button
-            disabled={isLoading}
-            size="xs"
-            rightSection={<TbDeviceFloppy />}
-            onClick={onEditClick}
-          >
-            Edit
-          </Button>
-        ) : (
-          <>
-            <Button
-              color="gray"
-              size="xs"
-              rightSection={<TbCancel />}
-              onClick={onCancelClick}
-            >
-              Cancel
-            </Button>
-            <Button
-              size="xs"
-              rightSection={<TbDeviceFloppy />}
-              onClick={onSaveClick}
-            >
-              Save
-            </Button>
-          </>
-        )}
+        <CancellableSaveButton
+          isEditMode={isEditMode}
+          isBusy={isLoading || saveMutation.isPending}
+          edit={{
+            onClick: onEditClick,
+            icon: <TbEdit />,
+          }}
+          save={{
+            onClick: onSaveClick,
+            icon: <TbDeviceFloppy />,
+          }}
+          cancel={{
+            onClick: onCancelClick,
+            icon: <TbCancel />,
+          }}
+        />
       </Group>
       {!isEditMode && (
         <SegmentedControl
