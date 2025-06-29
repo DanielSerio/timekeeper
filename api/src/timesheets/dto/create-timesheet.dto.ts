@@ -3,6 +3,7 @@ import { TimesheetCreate } from "#shared/types/models/timesheet.model-types";
 
 export class CreateTimesheetLineDto implements TimesheetLineCreate {
   id?: number;
+  timesheetId?: number;
   categoryId: number;
   startTime: string;
   endTime: string;

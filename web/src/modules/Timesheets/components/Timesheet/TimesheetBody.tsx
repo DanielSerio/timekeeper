@@ -37,7 +37,7 @@ export function getRunningTotal(
 }
 
 function TimesheetBodyComponent(
-  { className, ...props }: TimesheetBodyComponentProps,
+  { className, isLoading, ...props }: TimesheetBodyComponentProps,
   ref?: ForwardedRef<HTMLDivElement>
 ) {
   const [timesheetCtx, timesheetMethods] = useTimesheetContext();
@@ -77,7 +77,12 @@ function TimesheetBodyComponent(
               line={line}
               onChange={onChange}
             >
-              <ActionIcon color="red" variant="subtle" size="sm">
+              <ActionIcon
+                color="red"
+                variant="subtle"
+                size="sm"
+                onClick={() => timesheetMethods.removeLines(line.id!)}
+              >
                 <TbTrash />
               </ActionIcon>
             </TimesheetRow>

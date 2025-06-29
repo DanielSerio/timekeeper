@@ -1,7 +1,8 @@
-import { createMockTimesheets, type MockTimesheet } from "#core/utilities/mock";
 import { useQuery } from "@tanstack/react-query";
+import { createMockTimesheets } from "#core/utilities/mock";
+import { TimesheetService } from "#timesheets/services/timesheet.service";
 
-const { categories, timesheets } = createMockTimesheets(3);
+const { categories } = createMockTimesheets(3);
 
 export const MOCK_CATEGORIES = categories;
 
@@ -9,10 +10,7 @@ export function useTimesheet(id: number) {
   return useQuery({
     queryKey: ["timesheet", id],
     async queryFn() {
-      //TODO: this. currently returning mock data
-      return await new Promise<MockTimesheet>((resolve) => {
-        setTimeout(() => resolve(timesheets[2]), 600);
-      });
+      return await TimesheetService.findTimesheet(id);
     },
   });
 }

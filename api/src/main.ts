@@ -26,7 +26,9 @@ function createDocsConfig({ title, description, version, tags }: DocsConfig) {
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    snapshot: true
+  });
 
   app.enableVersioning({
     type: VersioningType.URI,

@@ -14,7 +14,7 @@ import { Timesheet } from './entities/timesheet.entity';
 @Controller('timesheets')
 export class TimesheetsController {
   validator = new TimesheetValidator();
-  private entityValidator = z.number().int().positive();
+  private entityValidator = z.coerce.number().int().positive();
 
   validateId = this.entityValidator.parse;
   validateIds = z.array(this.entityValidator).parse;
@@ -145,7 +145,7 @@ export class TimesheetsController {
     const parsedId = this.parseID(id);
     const parsed = this.parseInput(updateTimesheetDto, 'update') as {
       name: string;
-      date: Date;
+      deleteLines: number[];
       lines: {
         categoryId: number;
         startTime: string;

@@ -64,8 +64,11 @@ export abstract class ApiService {
     if (this.isError(error)) {
       return error as Error;
     }
-
-    const newError = new Error(`Non-error object thrown: ${JSON.stringify(error)}`);
+    const err = error as any;
+    const newError = new Error(`Non-error object thrown: ${JSON.stringify({
+      name: err.name,
+      message: err.message
+    })}`);
     newError.name = 'NonErrorThrown';
 
     return newError;

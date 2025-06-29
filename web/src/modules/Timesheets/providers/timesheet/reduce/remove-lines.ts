@@ -2,15 +2,17 @@ import type { TimesheetLineCreate, TimesheetLineRecord, TimesheetLineUpdate } fr
 import type { RemoveLinesAction, TimesheetContextState } from "../types";
 
 export function removeLines(state: TimesheetContextState, action: RemoveLinesAction) {
-  const lineNotInDeleteArray = (line: TimesheetLineCreate | TimesheetLineUpdate | TimesheetLineRecord) => {
-    if (!(line as TimesheetLineUpdate).lineNo) return false;
+  const deleteLines = Array.from(new Set([...state.deleteLines, ...action.payload.ids]));
 
-    return !action.payload.lineNos.includes((line as TimesheetLineUpdate).lineNo!);
+  const lineNotInDeleteArray = (line: TimesheetLineCreate | TimesheetLineUpdate | TimesheetLineRecord) => {
+    if (!(line as TimesheetLineUpdate).id) return true;
+
+    return !deleteLines.includes((line as TimesheetLineUpdate).id!);
   };
 
   return {
     ...state,
+    deleteLines,
     lines: state.lines.filter(lineNotInDeleteArray).map((line, idx) => ({ ...line, lineNo: idx + 1 })),
-    deleteLines: Array.from(new Set([...state.deleteLines, ...action.payload.lineNos]))
   };
 }

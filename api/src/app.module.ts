@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Category } from './categories/entities/category.entity';
 import { Timesheet } from './timesheets/entities/timesheet.entity';
 import { TimesheetLine } from './timesheets/entities/timesheet-line.entity';
+import { DevtoolsModule } from '@nestjs/devtools-integration';
 
 @Module({
   imports: [
@@ -22,9 +23,12 @@ import { TimesheetLine } from './timesheets/entities/timesheet-line.entity';
           Timesheet,
           TimesheetLine
         ],
-        synchronize: true,
+        synchronize: process.env.NODE_ENV !== 'production',
       }),
       inject: [ConfigService],
+    }),
+    DevtoolsModule.register({
+      http: process.env.NODE_ENV !== 'production',
     }),
     CategoriesModule,
     TimesheetsModule
