@@ -125,8 +125,8 @@ export const TimesheetProvider = ({
     addLines: (...lines: TimesheetLinesPayload["lines"]) => {
       dispatch({ name: "add-lines", payload: { lines } });
     },
-    removeLines: (...lineNos: number[]) => {
-      dispatch({ name: "remove-lines", payload: { lineNos } });
+    removeLines: (...ids: number[]) => {
+      dispatch({ name: "remove-lines", payload: { ids } });
     },
   } satisfies TimesheetContextMethods;
 

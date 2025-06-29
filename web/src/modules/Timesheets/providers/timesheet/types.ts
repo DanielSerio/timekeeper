@@ -39,7 +39,7 @@ export interface TimesheetLinesPayload {
 type TimesheetUpdatePayload = TimesheetLineUpdate | TimesheetLineRecord;
 
 interface TimesheetDeletePayload {
-  lineNos: number[];
+  ids: number[];
 }
 
 export type TimesheetActionName = 'reset' | 'set-state' | 'change-name' | 'update-line' | 'set-lines' | 'add-lines' | 'remove-lines';

@@ -49,7 +49,7 @@ export class TimesheetValidator implements EntityValidator<ExtendedTimesheetCrea
   update = z.object({
     name: this._COMMON.name,
     lines: z.array(this.clientUpdateLine),
-    removeLines: z.array(z.number().int().positive()).nullable().optional()
+    deleteLines: z.array(z.number().int().positive()).nullable()
   });
 
   delete = z.object({

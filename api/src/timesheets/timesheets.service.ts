@@ -126,15 +126,6 @@ export class TimesheetsService {
 
       found.note = line.note ?? null;
 
-      console.info('updateTimesheetLine: ', {
-        timesheetId,
-        id: found.id,
-        categoryId: found.categoryId,
-        startTime: found.startTime,
-        endTime: found.endTime,
-        note: found.note
-      });
-
       return await this.linesRepo.save({
         timesheetId,
         id: found.id,
@@ -164,8 +155,6 @@ export class TimesheetsService {
         }
       }
     }
-
-    console.info('All promises created');
 
     return await Promise.all(promises);
   };
@@ -249,7 +238,10 @@ export class TimesheetsService {
       throw new NotFoundException(`Timesheet with id '${id}' not found`);
     }
 
-    return found;
+    return {
+      ...found,
+      lines: found.lines ? found.lines.map((lne, idx) => ({ ...lne, lineNo: idx + 1 })) : null
+    };
   }
 
   async findTimesheets(ids: number[]) {
@@ -273,7 +265,7 @@ export class TimesheetsService {
 
   async updateTimesheet(id: number, updateTimesheetDto: UpdateTimesheetDto) {
     try {
-      const { lines: _fetchedLines, ...timesheet } = await this.findTimesheet(id);
+      const { lines: fetchedLines, ...timesheet } = await this.findTimesheet(id);
       const { lines, deleteLines, ...updateProps } = updateTimesheetDto;
 
       if (!!updateProps.name && updateProps.name !== timesheet.name) {
@@ -310,7 +302,7 @@ export class TimesheetsService {
   }
 
   async removeTimesheet(id: number) {
-    const foundTimesheet = await this.findTimesheet(id, true);
+    const { lines, ...foundTimesheet } = await this.findTimesheet(id, true);
     const lineIds = (await this.getLineForTimesheet(id)).map(({ id }) => id);
 
     const [deleteLinesResult, removed] = await Promise.all([
